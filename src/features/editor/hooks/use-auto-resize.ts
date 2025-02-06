@@ -25,7 +25,7 @@ const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     const zoomRatio = 0.85;
     const localWorkspace = canvas
       .getObjects()
-      .find((object) => object.name === "clip");
+      .find((object) => object.name === "workspace");
 
     if (!localWorkspace) {
       return;

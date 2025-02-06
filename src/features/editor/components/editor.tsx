@@ -6,6 +6,7 @@ import * as fabric from "fabric";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import { Navbar } from "@/features/editor/components/navbar";
 import { Sidebar } from "@/features/editor/components/sidebar";
+import { ShapesSidebar } from "@/features/editor/components/shapes-sidebar";
 import { Toolbar } from "@/features/editor/components/toolbar";
 import { Footer } from "@/features/editor/components/footer";
 import { ActiveTool } from "@/features/editor/types";
@@ -29,7 +30,7 @@ const Editor = () => {
     setActiveTool(tool);
   }, [activeTool]);
 
-  const { init } = useEditor();
+  const { init, editor } = useEditor();
 
   const canvasRef = useRef(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,8 +56,10 @@ const Editor = () => {
       <Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
       <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
         <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+        <ShapesSidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} editor={editor} />
+
         <main className="flex-1 bg-muted overflow-auto relative flex flex-col">
-          <Toolbar />
+          <Toolbar editor={editor} />
           <div ref={containerRef} className="flex-1 h-[calc(100%-124px)]">
             <canvas ref={canvasRef} />
           </div>
