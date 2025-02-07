@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
-import { ActiveTool, Editor, STROKE_COLOR } from "@/features/editor/types";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ColorPicker } from "./color-picker";
+import { STROKE_COLOR } from "@/features/editor/constants";
 
 interface StrokeColorSidebarProps {
   activeTool: ActiveTool;

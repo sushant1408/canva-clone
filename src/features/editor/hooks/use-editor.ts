@@ -1,20 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
 import * as fabric from "fabric";
 
+import { BuildEditorProps, Editor } from "@/features/editor/types";
+import { useAutoResize } from "./use-auto-resize";
+import { useCanvasEvents } from "./use-canvas-events";
+import { isTextType } from "../utils";
 import {
-  BuildEditorProps,
   CIRCLE_OPTIONS,
-  Editor,
   FILL_COLOR,
   RECTANGLE_OPTIONS,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   TRIANGLE_OPTIONS,
-} from "@/features/editor/types";
-import { useAutoResize } from "./use-auto-resize";
-import { useCanvasEvents } from "./use-canvas-events";
-import { isTextType } from "../utils";
+} from "@/features/editor/constants";
 
 const buildEditor = ({
   canvas,
@@ -164,6 +163,16 @@ const buildEditor = ({
       );
       addToCanvas(object);
     },
+    addShape: (matrix) => {
+      const object = new fabric.Polygon(matrix, {
+        ...RECTANGLE_OPTIONS,
+        fill: fillColor,
+        stroke: strokeColor,
+        strokeWidth,
+        strokeDashArray,
+      });
+      addToCanvas(object);
+    },
     canvas,
     getActiveFillColor: () => {
       const selectedObject = selectedObjects[0];
@@ -219,7 +228,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [fillColor, setFillColor] = useState(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
-  const [strokeDashArray, setStrokeDashArray] = useState<number[]>(STROKE_DASH_ARRAY);
+  const [strokeDashArray, setStrokeDashArray] =
+    useState<number[]>(STROKE_DASH_ARRAY);
 
   // to make the canvas and workspace responsive
   useAutoResize({ canvas, container });
@@ -243,7 +253,14 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     }
 
     return undefined;
-  }, [canvas, fillColor, strokeColor, strokeWidth, strokeDashArray, selectedObjects]);
+  }, [
+    canvas,
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    strokeDashArray,
+    selectedObjects,
+  ]);
 
   const init = useCallback(
     ({

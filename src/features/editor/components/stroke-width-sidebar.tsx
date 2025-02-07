@@ -1,17 +1,12 @@
 import { cn } from "@/lib/utils";
-import {
-  ActiveTool,
-  Editor,
-  STROKE_COLOR,
-  STROKE_DASH_ARRAY,
-  STROKE_WIDTH,
-} from "@/features/editor/types";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { STROKE_DASH_ARRAY, STROKE_WIDTH } from "@/features/editor/constants";
 
 interface StrokeWidthSidebarProps {
   activeTool: ActiveTool;
