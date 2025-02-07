@@ -14,6 +14,8 @@ import { StrokeColorSidebar } from "@/features/editor/components/stroke-color-si
 import { StrokeWidthSidebar } from "@/features/editor/components/stroke-width-sidebar";
 import { PositionSidebar } from "@/features/editor/components/position-sidebar";
 import { OpacitySidebar } from "@/features/editor/components/opacity-sidebar";
+import { TextSidebar } from "@/features/editor/components/text-sidebar";
+import { FontSidebar } from "@/features/editor/components/font-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 
 const Editor = () => {
@@ -105,8 +107,17 @@ const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
+        <TextSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <FontSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
         
-
         <main className="flex-1 bg-muted overflow-auto relative flex flex-col">
           <Toolbar
             key={JSON.stringify(editor?.canvas.getActiveObject())}

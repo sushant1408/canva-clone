@@ -45,12 +45,14 @@ export type BuildEditorProps = {
   strokeDashArray: number[];
   opacity: number;
   borderRadius: number;
+  fontFamily: string;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
   setStrokeWidth: (value: number) => void;
   setStrokeDashArray: (value: number[]) => void;
   setOpacity: (value: number) => void;
   setBorderRadius: (value: number) => void;
+  setFontFamily: (value: string) => void;
   selectedObjects: fabric.FabricObject[];
 };
 
@@ -66,6 +68,8 @@ export interface Editor {
   changeStrokeDashArray: (value: number[]) => void;
   changeOpacity: (value: number) => void;
   changeBorderRadius: (value: number) => void;
+  changeFontFamily: (value: string) => void;
+  addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
   addSoftRectangle: () => void;
   addRectangle: () => void;
@@ -80,5 +84,6 @@ export interface Editor {
   getActiveStrokeDashArray: () => number[];
   getActiveOpacity: () => number;
   getActiveBorderRadius: () => number;
+  getActiveFontFamily: () => string;
   selectedObjects: fabric.FabricObject[];
 }

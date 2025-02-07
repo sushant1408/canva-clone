@@ -13,11 +13,13 @@ import {
   BORDER_RADIUS,
   CIRCLE_OPTIONS,
   FILL_COLOR,
+  FONT_FAMILY,
   OPACITY,
   RECTANGLE_OPTIONS,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
+  TEXT_OPTIONS,
   TRIANGLE_OPTIONS,
 } from "@/features/editor/constants";
 
@@ -29,12 +31,14 @@ const buildEditor = ({
   strokeDashArray,
   opacity,
   borderRadius,
+  fontFamily,
   setFillColor,
   setStrokeColor,
   setStrokeWidth,
   setStrokeDashArray,
   setOpacity,
   setBorderRadius,
+  setFontFamily,
   selectedObjects,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
@@ -207,7 +211,7 @@ const buildEditor = ({
 
       canvas.renderAll();
     },
-    changeAlignment: (value: AlignElementTool) => {
+    changeAlignment: (value) => {
       if (selectedObjects.length === 1) {
         alignToWorkspace(value);
       } else if (selectedObjects.length > 1) {
@@ -216,14 +220,14 @@ const buildEditor = ({
         return;
       }
     },
-    changeFillColor: (value: string) => {
+    changeFillColor: (value) => {
       setFillColor(value);
       canvas.getActiveObjects().forEach((object) => {
         object.set({ fill: value });
       });
       canvas.renderAll();
     },
-    changeStrokeColor: (value: string) => {
+    changeStrokeColor: (value) => {
       setStrokeColor(value);
       canvas.getActiveObjects().forEach((object) => {
         // text types don't have stroke, so we're updating fill
@@ -236,7 +240,7 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
-    changeStrokeWidth: (value: number) => {
+    changeStrokeWidth: (value) => {
       setStrokeWidth(value);
       canvas.getActiveObjects().forEach((object) => {
         object.set({ strokeWidth: value });
@@ -244,21 +248,21 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
-    changeStrokeDashArray: (value: number[]) => {
+    changeStrokeDashArray: (value) => {
       setStrokeDashArray(value);
       canvas.getActiveObjects().forEach((object) => {
         object.set({ strokeDashArray: value });
       });
       canvas.renderAll();
     },
-    changeOpacity: (value: number) => {
+    changeOpacity: (value) => {
       setOpacity(value);
       canvas.getActiveObjects().forEach((object) => {
         object.set({ opacity: value });
       });
       canvas.renderAll();
     },
-    changeBorderRadius: (value: number) => {
+    changeBorderRadius: (value) => {
       setBorderRadius(value);
       canvas.getActiveObjects().forEach((object) => {
         if (!isRectType(object.type)) {
@@ -268,6 +272,23 @@ const buildEditor = ({
         object.set({ rx: value, ry: value });
       });
       canvas.renderAll();
+    },
+    changeFontFamily: (value) => {
+      setFontFamily(value);
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontFamily: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    addText: (value, options) => {
+      const object = new fabric.Textbox(value, {
+        ...TEXT_OPTIONS,
+        fill: fillColor,
+        ...options,
+      });
+      addToCanvas(object);
     },
     addCircle: () => {
       const object = new fabric.Circle({
@@ -417,6 +438,15 @@ const buildEditor = ({
 
       return selectedObject.get("rx") || borderRadius;
     },
+    getActiveFontFamily: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return fontFamily;
+      }
+
+      return selectedObject.get("fontFamily") || fontFamily;
+    },
     selectedObjects,
   };
 };
@@ -439,6 +469,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     useState<number[]>(STROKE_DASH_ARRAY);
   const [opacity, setOpacity] = useState(OPACITY);
   const [borderRadius, setBorderRadius] = useState(BORDER_RADIUS);
+  const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
 
   // to make the canvas and workspace responsive
   useAutoResize({ canvas, container });
@@ -456,11 +487,13 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
         strokeDashArray,
         opacity,
         borderRadius,
+        fontFamily,
         setStrokeColor,
         setStrokeWidth,
         setStrokeDashArray,
         setOpacity,
         setBorderRadius,
+        setFontFamily,
         selectedObjects,
       });
     }
@@ -473,6 +506,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     strokeWidth,
     strokeDashArray,
     opacity,
+    borderRadius,
+    fontFamily,
     selectedObjects,
   ]);
 

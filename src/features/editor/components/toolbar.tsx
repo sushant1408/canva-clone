@@ -6,6 +6,8 @@ import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { isTextType } from "../utils";
+import { ChevronDownIcon } from "lucide-react";
 
 interface ToolbarProps {
   activeTool: ActiveTool;
@@ -16,6 +18,11 @@ interface ToolbarProps {
 const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
   const fillColor = editor?.getActiveFillColor();
   const strokeColor = editor?.getActiveStrokeColor();
+  const fontFamily = editor?.getActiveFontFamily();
+
+  const selectedObjectType = editor?.selectedObjects[0]?.type;
+
+  const isTextObjecSelected = isTextType(selectedObjectType);
 
   if (editor?.selectedObjects.length === 0) {
     return (
@@ -42,35 +49,39 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
           </Button>
         </TooltipWrapper>
       </div>
-      <div className="flex items-center h-full justify-center">
-        <TooltipWrapper label="Border color" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("stroke-color")}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === "stroke-color" && "bg-gray-100")}
-          >
-            <div
-              className="rounded-sm size-4 border-2 bg-white"
-              style={{
-                borderColor: strokeColor,
-              }}
-            />
-          </Button>
-        </TooltipWrapper>
-      </div>
-      <div className="flex items-center h-full justify-center">
-        <TooltipWrapper label="Border style" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("stroke-width")}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === "stroke-width" && "bg-gray-100")}
-          >
-            <BsBorderWidth className="size-4" />
-          </Button>
-        </TooltipWrapper>
-      </div>
+      {!isTextObjecSelected && (
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Border color" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("stroke-color")}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === "stroke-color" && "bg-gray-100")}
+            >
+              <div
+                className="rounded-sm size-4 border-2 bg-white"
+                style={{
+                  borderColor: strokeColor,
+                }}
+              />
+            </Button>
+          </TooltipWrapper>
+        </div>
+      )}
+      {!isTextObjecSelected && (
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Border style" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("stroke-width")}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === "stroke-width" && "bg-gray-100")}
+            >
+              <BsBorderWidth className="size-4" />
+            </Button>
+          </TooltipWrapper>
+        </div>
+      )}
       <Separator orientation="vertical" />
       <div className="flex items-center h-full justify-center">
         <TooltipWrapper label="Opacity" side="bottom" sideOffset={5}>
@@ -84,6 +95,27 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
           </Button>
         </TooltipWrapper>
       </div>
+      {isTextObjecSelected && (
+        <>
+          <Separator orientation="vertical" />
+          <div className="flex items-center h-full justify-center">
+            <TooltipWrapper label="Font" side="bottom" sideOffset={5}>
+              <Button
+                onClick={() => onChangeActiveTool("font")}
+                size="icon"
+                variant="ghost"
+                className={cn(
+                  "w-auto px-2 text-sm",
+                  activeTool === "font" && "bg-gray-100"
+                )}
+              >
+                <div className="max-w-[100px] truncate">{fontFamily}</div>
+                <ChevronDownIcon className="size-4 ml-2 shrink-0" />
+              </Button>
+            </TooltipWrapper>
+          </div>
+        </>
+      )}
       <Separator orientation="vertical" />
       <div className="flex items-center h-full justify-center">
         <Button

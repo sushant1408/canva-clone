@@ -28,6 +28,8 @@ export const STROKE_WIDTH = 2;
 export const STROKE_DASH_ARRAY = [];
 export const OPACITY = 2;
 export const BORDER_RADIUS = 0;
+export const FONT_FAMILY = "Arial";
+export const FONT_SIZE = 36;
 
 export const CIRCLE_OPTIONS = {
   radius: 200,
@@ -59,6 +61,37 @@ export const TRIANGLE_OPTIONS = {
   strokeWidth: STROKE_WIDTH,
   angle: 0,
 };
+
+export const TEXT_OPTIONS = {
+  left: 100,
+  top: 100,
+  fill: FILL_COLOR,
+  fontSize: FONT_SIZE,
+  fontFamily: FONT_FAMILY,
+};
+
+export const fonts = [
+  "Arial",
+  "Arial Black",
+  "Verdana",
+  "Helvetica",
+  "Tahoma",
+  "Trebuchet MS",
+  "Times Now Roman",
+  "Georgia",
+  "Geramond",
+  "Courier New",
+  "Brush Script MT",
+  "Palatino",
+  "Bookman",
+  "Comic Sans MS",
+  "Impact",
+  "Lucida Sans Unicode",
+  "Geneva",
+  "Lucida Console",
+  "Circular",
+  "Monospace"
+];
 
 export const POLYGON_MATRICES = {
   pentagon: [
