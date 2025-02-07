@@ -12,6 +12,8 @@ import { Footer } from "@/features/editor/components/footer";
 import { FillColorSidebar } from "@/features/editor/components/fill-color-sidebar";
 import { StrokeColorSidebar } from "@/features/editor/components/stroke-color-sidebar";
 import { StrokeWidthSidebar } from "@/features/editor/components/stroke-width-sidebar";
+import { PositionSidebar } from "@/features/editor/components/position-sidebar";
+import { OpacitySidebar } from "@/features/editor/components/opacity-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 
 const Editor = () => {
@@ -93,6 +95,17 @@ const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
+        <PositionSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <OpacitySidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        
 
         <main className="flex-1 bg-muted overflow-auto relative flex flex-col">
           <Toolbar

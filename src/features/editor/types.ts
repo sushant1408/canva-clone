@@ -15,7 +15,8 @@ export type ActiveTool =
   | "settings"
   | "ai"
   | "remove-bg"
-  | "templates";
+  | "templates"
+  | "position";
 
 export const selectionDependentTools: ActiveTool[] = [
   "fill",
@@ -25,7 +26,16 @@ export const selectionDependentTools: ActiveTool[] = [
   "remove-bg",
   "stroke-color",
   "stroke-width",
+  "position",
 ];
+
+export type AlignElementTool =
+  | "top"
+  | "left"
+  | "middle"
+  | "center"
+  | "bottom"
+  | "right";
 
 export type BuildEditorProps = {
   canvas: fabric.Canvas;
@@ -33,18 +43,29 @@ export type BuildEditorProps = {
   strokeColor: string;
   strokeWidth: number;
   strokeDashArray: number[];
+  opacity: number;
+  borderRadius: number;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
   setStrokeWidth: (value: number) => void;
   setStrokeDashArray: (value: number[]) => void;
+  setOpacity: (value: number) => void;
+  setBorderRadius: (value: number) => void;
   selectedObjects: fabric.FabricObject[];
 };
 
 export interface Editor {
+  bringForward: () => void;
+  sendBackwards: () => void;
+  bringToFront: () => void;
+  sendToBack: () => void;
+  changeAlignment: (value: AlignElementTool) => void;
   changeFillColor: (value: string) => void;
   changeStrokeColor: (value: string) => void;
   changeStrokeWidth: (value: number) => void;
   changeStrokeDashArray: (value: number[]) => void;
+  changeOpacity: (value: number) => void;
+  changeBorderRadius: (value: number) => void;
   addCircle: () => void;
   addSoftRectangle: () => void;
   addRectangle: () => void;
@@ -57,5 +78,7 @@ export interface Editor {
   getActiveStrokeColor: () => string;
   getActiveStrokeWidth: () => number;
   getActiveStrokeDashArray: () => number[];
+  getActiveOpacity: () => number;
+  getActiveBorderRadius: () => number;
   selectedObjects: fabric.FabricObject[];
 }

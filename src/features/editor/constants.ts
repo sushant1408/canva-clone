@@ -26,6 +26,8 @@ export const FILL_COLOR = "rgba(0, 0, 0, 1)";
 export const STROKE_COLOR = "rgba(0, 0, 0, 1)";
 export const STROKE_WIDTH = 2;
 export const STROKE_DASH_ARRAY = [];
+export const OPACITY = 2;
+export const BORDER_RADIUS = 0;
 
 export const CIRCLE_OPTIONS = {
   radius: 200,

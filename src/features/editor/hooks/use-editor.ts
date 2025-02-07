@@ -1,13 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
 import * as fabric from "fabric";
 
-import { BuildEditorProps, Editor } from "@/features/editor/types";
+import {
+  AlignElementTool,
+  BuildEditorProps,
+  Editor,
+} from "@/features/editor/types";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
-import { isTextType } from "../utils";
+import { isRectType, isTextType } from "../utils";
 import {
+  BORDER_RADIUS,
   CIRCLE_OPTIONS,
   FILL_COLOR,
+  OPACITY,
   RECTANGLE_OPTIONS,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
@@ -21,10 +27,14 @@ const buildEditor = ({
   strokeColor,
   strokeWidth,
   strokeDashArray,
+  opacity,
+  borderRadius,
   setFillColor,
   setStrokeColor,
   setStrokeWidth,
   setStrokeDashArray,
+  setOpacity,
+  setBorderRadius,
   selectedObjects,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
@@ -33,8 +43,12 @@ const buildEditor = ({
 
   const center = (object: fabric.FabricObject) => {
     const workspace = getWorkspace();
-    const center = workspace?.getCenterPoint();
 
+    if (!workspace) {
+      return;
+    }
+
+    const center = workspace.getCenterPoint();
     canvas._centerObject(object, center);
   };
 
@@ -44,7 +58,164 @@ const buildEditor = ({
     canvas.setActiveObject(object);
   };
 
+  const alignToWorkspace = (value: AlignElementTool) => {
+    const workspace = getWorkspace();
+
+    if (!workspace) {
+      return;
+    }
+
+    switch (value) {
+      case "bottom":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            top:
+              workspace.top + workspace.height - object.height * object.scaleY,
+          });
+          object.setCoords();
+        });
+        break;
+      case "center":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            left:
+              workspace.left +
+              (workspace.width - object.width * object.scaleX) / 2,
+          });
+          object.setCoords();
+        });
+        break;
+      case "left":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            left: workspace.left,
+          });
+          object.setCoords();
+        });
+        break;
+      case "middle":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            top:
+              workspace.top +
+              (workspace.height - object.height * object.scaleY) / 2,
+          });
+          object.setCoords();
+        });
+        break;
+      case "right":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            left:
+              workspace.left + workspace.width - object.width * object.scaleX,
+          });
+          object.setCoords();
+        });
+        break;
+      case "top":
+        canvas.getActiveObjects().forEach((object) => {
+          object.set({
+            top: workspace.top,
+          });
+          object.setCoords();
+        });
+        break;
+      default:
+        break;
+    }
+
+    canvas.renderAll();
+  };
+
+  const alignToGroupBounds = (value: AlignElementTool) => {
+    const selection = canvas.getActiveObject();
+
+    // Get the bounding box of the selection
+    const groupBounds = selection.getBoundingRect();
+    console.log({ selection, groupBounds });
+
+    switch (value) {
+      case "bottom":
+        break;
+      case "center":
+        break;
+      case "left":
+        break;
+      case "middle":
+        break;
+      case "right":
+        break;
+      case "top":
+        break;
+      default:
+        break;
+    }
+
+    canvas.renderAll();
+  };
+
   return {
+    bringForward: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.bringObjectForward(object);
+      });
+
+      // we're making sure that workspace will be the last object to prevent the other elements going behind it
+      const workspace = getWorkspace();
+      if (workspace) {
+        canvas.sendObjectToBack(workspace);
+      }
+
+      canvas.renderAll();
+    },
+    sendBackwards: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.sendObjectBackwards(object);
+      });
+
+      // we're making sure that workspace will be the last object to prevent the other elements going behind it
+      const workspace = getWorkspace();
+      if (workspace) {
+        canvas.sendObjectToBack(workspace);
+      }
+
+      canvas.renderAll();
+    },
+    bringToFront: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.bringObjectToFront(object);
+      });
+
+      // we're making sure that workspace will be the last object to prevent the other elements going behind it
+      const workspace = getWorkspace();
+      if (workspace) {
+        canvas.sendObjectToBack(workspace);
+      }
+
+      canvas.renderAll();
+    },
+    sendToBack: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.sendObjectToBack(object);
+      });
+
+      // we're making sure that workspace will be the last object to prevent the other elements going behind it
+      const workspace = getWorkspace();
+      if (workspace) {
+        canvas.sendObjectToBack(workspace);
+      }
+
+      canvas.renderAll();
+    },
+    changeAlignment: (value: AlignElementTool) => {
+      if (selectedObjects.length === 1) {
+        alignToWorkspace(value);
+      } else if (selectedObjects.length > 1) {
+        alignToGroupBounds(value);
+      } else {
+        return;
+      }
+    },
     changeFillColor: (value: string) => {
       setFillColor(value);
       canvas.getActiveObjects().forEach((object) => {
@@ -77,6 +248,24 @@ const buildEditor = ({
       setStrokeDashArray(value);
       canvas.getActiveObjects().forEach((object) => {
         object.set({ strokeDashArray: value });
+      });
+      canvas.renderAll();
+    },
+    changeOpacity: (value: number) => {
+      setOpacity(value);
+      canvas.getActiveObjects().forEach((object) => {
+        object.set({ opacity: value });
+      });
+      canvas.renderAll();
+    },
+    changeBorderRadius: (value: number) => {
+      setBorderRadius(value);
+      canvas.getActiveObjects().forEach((object) => {
+        if (!isRectType(object.type)) {
+          return;
+        }
+
+        object.set({ rx: value, ry: value });
       });
       canvas.renderAll();
     },
@@ -210,6 +399,24 @@ const buildEditor = ({
 
       return selectedObject.get("strokeDashArray") || strokeDashArray;
     },
+    getActiveOpacity: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return opacity;
+      }
+
+      return selectedObject.get("opacity") || opacity;
+    },
+    getActiveBorderRadius: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return borderRadius;
+      }
+
+      return selectedObject.get("rx") || borderRadius;
+    },
     selectedObjects,
   };
 };
@@ -230,6 +437,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
+  const [opacity, setOpacity] = useState(OPACITY);
+  const [borderRadius, setBorderRadius] = useState(BORDER_RADIUS);
 
   // to make the canvas and workspace responsive
   useAutoResize({ canvas, container });
@@ -245,9 +454,13 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
         setFillColor,
         strokeWidth,
         strokeDashArray,
+        opacity,
+        borderRadius,
         setStrokeColor,
         setStrokeWidth,
         setStrokeDashArray,
+        setOpacity,
+        setBorderRadius,
         selectedObjects,
       });
     }
@@ -259,6 +472,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     strokeColor,
     strokeWidth,
     strokeDashArray,
+    opacity,
     selectedObjects,
   ]);
 

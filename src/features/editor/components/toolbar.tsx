@@ -1,9 +1,11 @@
 import { BsBorderWidth } from "react-icons/bs";
+import { RxTransparencyGrid } from "react-icons/rx";
 
 import { ActiveTool, Editor } from "../types";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 interface ToolbarProps {
   activeTool: ActiveTool;
@@ -41,7 +43,7 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
         </TooltipWrapper>
       </div>
       <div className="flex items-center h-full justify-center">
-        <TooltipWrapper label="Stroke color" side="bottom" sideOffset={5}>
+        <TooltipWrapper label="Border color" side="bottom" sideOffset={5}>
           <Button
             onClick={() => onChangeActiveTool("stroke-color")}
             size="icon"
@@ -58,7 +60,7 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
         </TooltipWrapper>
       </div>
       <div className="flex items-center h-full justify-center">
-        <TooltipWrapper label="Stroke width" side="bottom" sideOffset={5}>
+        <TooltipWrapper label="Border style" side="bottom" sideOffset={5}>
           <Button
             onClick={() => onChangeActiveTool("stroke-width")}
             size="icon"
@@ -68,6 +70,29 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
             <BsBorderWidth className="size-4" />
           </Button>
         </TooltipWrapper>
+      </div>
+      <Separator orientation="vertical" />
+      <div className="flex items-center h-full justify-center">
+        <TooltipWrapper label="Opacity" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => onChangeActiveTool("opacity")}
+            size="icon"
+            variant="ghost"
+            className={cn(activeTool === "opacity" && "bg-gray-100")}
+          >
+            <RxTransparencyGrid className="size-4" />
+          </Button>
+        </TooltipWrapper>
+      </div>
+      <Separator orientation="vertical" />
+      <div className="flex items-center h-full justify-center">
+        <Button
+          onClick={() => onChangeActiveTool("position")}
+          variant="ghost"
+          className={cn(activeTool === "position" && "bg-gray-100")}
+        >
+          Position
+        </Button>
       </div>
     </div>
   );

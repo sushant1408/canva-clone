@@ -4,6 +4,10 @@ function isTextType(type: string | undefined) {
   return type === "text" || type === "i-text" || type === "textbox";
 }
 
+function isRectType(type: string | undefined) {
+  return type === "rect";
+}
+
 function rgbaObjectToString(rgba: RGBColor | "transparent") {
   if (rgba === "transparent") {
     return "rgba(0, 0, 0, 0)";
@@ -14,4 +18,4 @@ function rgbaObjectToString(rgba: RGBColor | "transparent") {
   return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${alpha})`;
 }
 
-export { isTextType, rgbaObjectToString };
+export { isTextType, isRectType, rgbaObjectToString };

@@ -6,7 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { STROKE_DASH_ARRAY, STROKE_WIDTH } from "@/features/editor/constants";
+import {
+  BORDER_RADIUS,
+  STROKE_DASH_ARRAY,
+  STROKE_WIDTH,
+} from "@/features/editor/constants";
+import { isRectType } from "../utils";
 
 interface StrokeWidthSidebarProps {
   activeTool: ActiveTool;
@@ -21,6 +26,10 @@ const StrokeWidthSidebar = ({
 }: StrokeWidthSidebarProps) => {
   const strokeDashArray =
     editor?.getActiveStrokeDashArray() || STROKE_DASH_ARRAY;
+  const borderRadius =
+    editor?.getActiveBorderRadius() === undefined
+      ? BORDER_RADIUS
+      : editor.getActiveBorderRadius();
 
   const onClose = () => {
     onChangeActiveTool("select");
@@ -34,6 +43,10 @@ const StrokeWidthSidebar = ({
     editor?.changeStrokeDashArray(value);
   };
 
+  const onChangeBorderRadius = (value: number) => {
+    editor?.changeBorderRadius(value);
+  };
+
   return (
     <aside
       className={cn(
@@ -42,12 +55,12 @@ const StrokeWidthSidebar = ({
       )}
     >
       <ToolSidebarHeader
-        title="Stroke options"
-        description="Modify the stroke of your element"
+        title="Border options"
+        description="Modify the border of your element"
       />
       <ScrollArea>
         <div className="p-4 space-y-4 border-b">
-          <Label className="text-sm">Stroke width</Label>
+          <Label className="text-sm">Border width</Label>
           <Slider
             value={[editor?.getActiveStrokeWidth() || STROKE_WIDTH]}
             max={100}
@@ -56,7 +69,7 @@ const StrokeWidthSidebar = ({
           />
         </div>
         <div className="p-4 space-y-4 border-b">
-          <Label className="text-sm">Stroke style</Label>
+          <Label className="text-sm">Border style</Label>
           <Button
             onClick={() => onChangeStrokeType([])}
             variant="secondary"
@@ -81,6 +94,22 @@ const StrokeWidthSidebar = ({
           >
             <div className="w-full border-black rounded-full border-4 border-dashed" />
           </Button>
+        </div>
+        <div className="p-4 space-y-4 border-b">
+          <Label className="text-sm">Border radius</Label>
+          <Slider
+            value={[borderRadius]}
+            max={100}
+            min={0}
+            step={1}
+            onValueChange={(values) => onChangeBorderRadius(values[0])}
+            disabled={
+              editor?.selectedObjects &&
+              (editor.selectedObjects.length > 1 ||
+                !isRectType(editor.selectedObjects[0]?.type))
+            }
+            className="data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
+          />
         </div>
       </ScrollArea>
       <ToolSidebarClose onClick={onClose} />
