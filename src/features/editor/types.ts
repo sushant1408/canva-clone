@@ -37,6 +37,8 @@ export type AlignElementTool =
   | "bottom"
   | "right";
 
+export type TextAlignment = "left" | "center" | "right" | "justify";
+
 export type BuildEditorProps = {
   canvas: fabric.Canvas;
   fillColor: string;
@@ -57,6 +59,7 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  delete: () => void;
   bringForward: () => void;
   sendBackwards: () => void;
   bringToFront: () => void;
@@ -69,6 +72,12 @@ export interface Editor {
   changeOpacity: (value: number) => void;
   changeBorderRadius: (value: number) => void;
   changeFontFamily: (value: string) => void;
+  changeFontWeight: (value: number) => void;
+  changeFontStyle: (value: string) => void;
+  changeFontUnderline: (value: boolean) => void;
+  changeFontStrikeThrough: (value: boolean) => void;
+  changeTextAlignment: (value: TextAlignment) => void;
+  changeFontSize: (value: number) => void;
   addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
   addSoftRectangle: () => void;
@@ -85,5 +94,11 @@ export interface Editor {
   getActiveOpacity: () => number;
   getActiveBorderRadius: () => number;
   getActiveFontFamily: () => string;
+  getActiveFontWeight: () => number;
+  getActiveFontStyle: () => string;
+  getActiveFontUnderline: () => boolean;
+  getActiveFontStrikethrough: () => boolean;
+  getActiveTextAlignment: () => TextAlignment;
+  getActiveFontSize: () => number;
   selectedObjects: fabric.FabricObject[];
 }

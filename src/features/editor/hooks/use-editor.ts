@@ -14,6 +14,8 @@ import {
   CIRCLE_OPTIONS,
   FILL_COLOR,
   FONT_FAMILY,
+  FONT_SIZE,
+  FONT_WEIGHT,
   OPACITY,
   RECTANGLE_OPTIONS,
   STROKE_COLOR,
@@ -159,6 +161,13 @@ const buildEditor = ({
   };
 
   return {
+    delete: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.remove(object);
+      });
+      canvas.discardActiveObject();
+      canvas.renderAll();
+    },
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.bringObjectForward(object);
@@ -282,6 +291,54 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
+    changeFontWeight: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontWeight: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontStyle: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontStyle: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontUnderline: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ underline: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontStrikeThrough: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ linethrough: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeTextAlignment: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ textAlign: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontSize: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontSize: value });
+        }
+      });
+      canvas.renderAll();
+    },
     addText: (value, options) => {
       const object = new fabric.Textbox(value, {
         ...TEXT_OPTIONS,
@@ -383,7 +440,6 @@ const buildEditor = ({
       });
       addToCanvas(object);
     },
-    canvas,
     getActiveFillColor: () => {
       const selectedObject = selectedObjects[0];
 
@@ -447,6 +503,61 @@ const buildEditor = ({
 
       return selectedObject.get("fontFamily") || fontFamily;
     },
+    getActiveFontWeight: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return FONT_WEIGHT;
+      }
+
+      return selectedObject.get("fontWeight") || FONT_WEIGHT;
+    },
+    getActiveFontStyle: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return "normal";
+      }
+
+      return selectedObject.get("fontStyle") || "normal";
+    },
+    getActiveFontUnderline: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return false;
+      }
+
+      return selectedObject.get("underline") || false;
+    },
+    getActiveFontStrikethrough: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return false;
+      }
+
+      return selectedObject.get("linethrough") || false;
+    },
+    getActiveTextAlignment: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return "left";
+      }
+
+      return selectedObject.get("textAlign") || "left";
+    },
+    getActiveFontSize: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return FONT_SIZE;
+      }
+
+      return selectedObject.get("fontSize") || FONT_SIZE;
+    },
+    canvas,
     selectedObjects,
   };
 };

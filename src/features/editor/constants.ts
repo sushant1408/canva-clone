@@ -1,4 +1,5 @@
 import * as material from "material-colors";
+import { TextAlignment } from "./types";
 
 export const colors = [
   material.red["500"],
@@ -29,7 +30,8 @@ export const STROKE_DASH_ARRAY = [];
 export const OPACITY = 2;
 export const BORDER_RADIUS = 0;
 export const FONT_FAMILY = "Arial";
-export const FONT_SIZE = 36;
+export const FONT_SIZE = 32;
+export const FONT_WEIGHT = 400;
 
 export const CIRCLE_OPTIONS = {
   radius: 200,
@@ -90,7 +92,19 @@ export const fonts = [
   "Geneva",
   "Lucida Console",
   "Circular",
-  "Monospace"
+  "Monospace",
+];
+
+export const fontSizes = [
+  6, 8, 10, 12, 14, 16, 18, 21, 24, 28, 32, 36, 42, 48, 56, 64, 72, 80, 88, 96,
+  104, 120, 144,
+];
+
+export const TEXT_ALIGNMENT_OPTIONS: TextAlignment[] = [
+  "left",
+  "center",
+  "right",
+  "justify",
 ];
 
 export const POLYGON_MATRICES = {
