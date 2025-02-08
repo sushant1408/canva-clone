@@ -1,5 +1,6 @@
 import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { ActiveTool, Editor } from "@/features/editor/types";
@@ -7,7 +8,6 @@ import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-hea
 import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetImages } from "@/features/images/api/use-get-images";
-import Link from "next/link";
 import { UploadButton } from "@/lib/uploadthing";
 
 interface ImagesSidebarProps {

@@ -35,6 +35,8 @@ const buildEditor = ({
   opacity,
   borderRadius,
   fontFamily,
+  brushColor,
+  brushWidth,
   setFillColor,
   setStrokeColor,
   setStrokeWidth,
@@ -42,7 +44,11 @@ const buildEditor = ({
   setOpacity,
   setBorderRadius,
   setFontFamily,
+  setBrushColor,
+  setBrushWidth,
   selectedObjects,
+  copy,
+  paste,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "workspace");
@@ -162,6 +168,21 @@ const buildEditor = ({
   };
 
   return {
+    // canvas functionalities
+    enableDrawingMode: () => {
+      canvas.discardActiveObject();
+      canvas.renderAll();
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+
+      canvas.freeDrawingBrush.width = strokeWidth;
+      canvas.freeDrawingBrush.color = strokeColor;
+    },
+    disableDrawingMode: () => {
+      canvas.isDrawingMode = false;
+    },
+    onCopy: () => copy(),
+    onPaste: () => paste(),
     delete: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.remove(object);
@@ -169,6 +190,8 @@ const buildEditor = ({
       canvas.discardActiveObject();
       canvas.renderAll();
     },
+
+    // layer modifications
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.bringObjectForward(object);
@@ -230,6 +253,8 @@ const buildEditor = ({
         return;
       }
     },
+
+    // modify elements
     changeFillColor: (value) => {
       setFillColor(value);
       canvas.getActiveObjects().forEach((object) => {
@@ -356,6 +381,20 @@ const buildEditor = ({
         }
       });
     },
+    changeBrushColor: (value) => {
+      setBrushColor(value);
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = value;
+      }
+    },
+    changeBrushWidth: (value) => {
+      setBrushWidth(value);
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.width = value;
+      }
+    },
+
+    // add elements
     addImage: async (value) => {
       const image = await fabric.FabricImage.fromURL(value, {
         crossOrigin: "anonymous",
@@ -473,6 +512,8 @@ const buildEditor = ({
       });
       addToCanvas(object);
     },
+
+    // get element properties
     getActiveFillColor: () => {
       const selectedObject = selectedObjects[0];
 
@@ -590,6 +631,13 @@ const buildEditor = ({
 
       return selectedObject.get("fontSize") || FONT_SIZE;
     },
+    getBrushColor: () => {
+      return canvas.freeDrawingBrush?.color || brushColor;
+    },
+    getBrushWidth: () => {
+      return canvas.freeDrawingBrush?.width || brushWidth;
+    },
+
     canvas,
     selectedObjects,
   };
@@ -614,8 +662,10 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [opacity, setOpacity] = useState(OPACITY);
   const [borderRadius, setBorderRadius] = useState(BORDER_RADIUS);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
+  const [brushColor, setBrushColor] = useState(STROKE_COLOR);
+  const [brushWidth, setBrushWidth] = useState(STROKE_WIDTH);
 
-  useClipboard({ canvas });
+  const { copy, paste } = useClipboard({ canvas });
 
   // to make the canvas and workspace responsive
   useAutoResize({ canvas, container });
@@ -634,13 +684,19 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
         opacity,
         borderRadius,
         fontFamily,
+        brushColor,
+        brushWidth,
         setStrokeColor,
         setStrokeWidth,
         setStrokeDashArray,
         setOpacity,
         setBorderRadius,
         setFontFamily,
+        setBrushColor,
+        setBrushWidth,
         selectedObjects,
+        copy,
+        paste,
       });
     }
 
@@ -654,7 +710,11 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     opacity,
     borderRadius,
     fontFamily,
+    brushColor,
+    brushWidth,
     selectedObjects,
+    copy,
+    paste,
   ]);
 
   const init = useCallback(

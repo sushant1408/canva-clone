@@ -9,6 +9,7 @@ import {
   AlignJustifyIcon,
   type LucideIcon,
   TrashIcon,
+  CopyIcon,
 } from "lucide-react";
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { TbColorFilter } from "react-icons/tb";
@@ -327,6 +328,21 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
           Position
         </Button>
       </div>
+      <div className="flex items-center h-full justify-center">
+        <TooltipWrapper label="Duplicate" side="bottom" sideOffset={5}>
+          <Button
+            onClick={async () => {
+              await editor?.onCopy();
+              editor?.onPaste();
+            }}
+            size="icon"
+            variant="ghost"
+          >
+            <CopyIcon className="size-4" />
+          </Button>
+        </TooltipWrapper>
+      </div>
+      <Separator orientation="vertical" />
       <div className="flex items-center h-full justify-center">
         <TooltipWrapper label="Delete" side="bottom" sideOffset={5}>
           <Button onClick={() => editor?.delete()} size="icon" variant="ghost">

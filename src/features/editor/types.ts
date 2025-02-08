@@ -48,6 +48,8 @@ export type BuildEditorProps = {
   opacity: number;
   borderRadius: number;
   fontFamily: string;
+  brushColor: string;
+  brushWidth: number;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
   setStrokeWidth: (value: number) => void;
@@ -55,10 +57,20 @@ export type BuildEditorProps = {
   setOpacity: (value: number) => void;
   setBorderRadius: (value: number) => void;
   setFontFamily: (value: string) => void;
+  setBrushColor: (value: string) => void;
+  setBrushWidth: (value: number) => void;
   selectedObjects: fabric.FabricObject[];
+  copy: () => Promise<void>;
+  paste: () => void;
 };
 
 export interface Editor {
+  canvas: fabric.Canvas;
+  selectedObjects: fabric.FabricObject[];
+  enableDrawingMode: () => void;
+  disableDrawingMode: () => void;
+  onCopy: () => Promise<void>;
+  onPaste: () => void;
   delete: () => void;
   bringForward: () => void;
   sendBackwards: () => void;
@@ -79,6 +91,8 @@ export interface Editor {
   changeTextAlignment: (value: TextAlignment) => void;
   changeFontSize: (value: number) => void;
   changeImageFilter: (value: string) => void;
+  changeBrushColor: (value: string) => void;
+  changeBrushWidth: (value: number) => void;
   addImage: (value: string) => void;
   addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
@@ -88,7 +102,6 @@ export interface Editor {
   addInvertedTriangle: () => void;
   addDiamond: () => void;
   addShape: (matrix: { x: number; y: number }[]) => void;
-  canvas: fabric.Canvas;
   getActiveFillColor: () => string;
   getActiveStrokeColor: () => string;
   getActiveStrokeWidth: () => number;
@@ -102,5 +115,6 @@ export interface Editor {
   getActiveFontStrikethrough: () => boolean;
   getActiveTextAlignment: () => TextAlignment;
   getActiveFontSize: () => number;
-  selectedObjects: fabric.FabricObject[];
+  getBrushColor: () => string;
+  getBrushWidth: () => number;
 }
