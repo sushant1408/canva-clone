@@ -31,6 +31,10 @@ const StrokeWidthSidebar = ({
       ? BORDER_RADIUS
       : editor.getActiveBorderRadius();
 
+  const selectedObjectType = editor?.selectedObjects[0]?.type;
+
+  const isRectObjectSelected = isRectType(selectedObjectType);
+
   const onClose = () => {
     onChangeActiveTool("select");
   };
@@ -103,11 +107,7 @@ const StrokeWidthSidebar = ({
             min={0}
             step={1}
             onValueChange={(values) => onChangeBorderRadius(values[0])}
-            disabled={
-              editor?.selectedObjects &&
-              (editor.selectedObjects.length > 1 ||
-                !isRectType(editor.selectedObjects[0]?.type))
-            }
+            disabled={!isRectObjectSelected}
             className="data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
           />
         </div>

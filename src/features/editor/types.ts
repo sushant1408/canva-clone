@@ -78,6 +78,8 @@ export interface Editor {
   changeFontStrikeThrough: (value: boolean) => void;
   changeTextAlignment: (value: TextAlignment) => void;
   changeFontSize: (value: number) => void;
+  changeImageFilter: (value: string) => void;
+  addImage: (value: string) => void;
   addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
   addSoftRectangle: () => void;

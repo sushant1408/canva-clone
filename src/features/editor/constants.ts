@@ -22,6 +22,60 @@ export const colors = [
   material.blueGrey["500"],
   "transparent",
 ];
+export const fonts = [
+  "Arial",
+  "Arial Black",
+  "Verdana",
+  "Helvetica",
+  "Tahoma",
+  "Trebuchet MS",
+  "Times Now Roman",
+  "Georgia",
+  "Geramond",
+  "Courier New",
+  "Brush Script MT",
+  "Palatino",
+  "Bookman",
+  "Comic Sans MS",
+  "Impact",
+  "Lucida Sans Unicode",
+  "Geneva",
+  "Lucida Console",
+  "Circular",
+  "Monospace",
+];
+
+export const fontSizes = [
+  6, 8, 10, 12, 14, 16, 18, 21, 24, 28, 32, 36, 42, 48, 56, 64, 72, 80, 88, 96,
+  104, 120, 144,
+];
+
+export const filters = [
+  "none",
+  "polaroid",
+  "sepia",
+  "kodachrome",
+  "contrast",
+  "brightness",
+  "grayscale",
+  "brownie",
+  "vintage",
+  "technicolor",
+  "pixelate",
+  "invert",
+  "blur",
+  "sharpen",
+  "emboss",
+  "removecolor",
+  "blacknwhite",
+  "vibrance",
+  "blendcolor",
+  "huerotate",
+  "resize",
+  "gamma",
+  "saturation",
+  "noise",
+];
 
 export const FILL_COLOR = "rgba(0, 0, 0, 1)";
 export const STROKE_COLOR = "rgba(0, 0, 0, 1)";
@@ -71,34 +125,6 @@ export const TEXT_OPTIONS = {
   fontSize: FONT_SIZE,
   fontFamily: FONT_FAMILY,
 };
-
-export const fonts = [
-  "Arial",
-  "Arial Black",
-  "Verdana",
-  "Helvetica",
-  "Tahoma",
-  "Trebuchet MS",
-  "Times Now Roman",
-  "Georgia",
-  "Geramond",
-  "Courier New",
-  "Brush Script MT",
-  "Palatino",
-  "Bookman",
-  "Comic Sans MS",
-  "Impact",
-  "Lucida Sans Unicode",
-  "Geneva",
-  "Lucida Console",
-  "Circular",
-  "Monospace",
-];
-
-export const fontSizes = [
-  6, 8, 10, 12, 14, 16, 18, 21, 24, 28, 32, 36, 42, 48, 56, 64, 72, 80, 88, 96,
-  104, 120, 144,
-];
 
 export const TEXT_ALIGNMENT_OPTIONS: TextAlignment[] = [
   "left",

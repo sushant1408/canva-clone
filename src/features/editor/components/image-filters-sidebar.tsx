@@ -3,22 +3,20 @@ import { ActiveTool, Editor } from "@/features/editor/types";
 import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { fonts } from "../constants";
 import { Button } from "@/components/ui/button";
+import { filters } from "../constants";
 
-interface FontSidebarProps {
+interface ImageFilterSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
   editor: Editor | undefined;
 }
 
-const FontSidebar = ({
+const ImageFilterSidebar = ({
   activeTool,
   editor,
   onChangeActiveTool,
-}: FontSidebarProps) => {
-  const activeFontFamily = editor?.getActiveFontFamily();
-
+}: ImageFilterSidebarProps) => {
   const onClose = () => {
     onChangeActiveTool("select");
   };
@@ -27,28 +25,24 @@ const FontSidebar = ({
     <aside
       className={cn(
         "bg-white relative border-r z-[40] w-[360px] h-full flex flex-col",
-        activeTool === "font" ? "visible" : "hidden"
+        activeTool === "filter" ? "visible" : "hidden"
       )}
     >
-      <ToolSidebarHeader title="Font" description="Change the text font" />
+      <ToolSidebarHeader
+        title="Filters"
+        description="Apply a filter to selected image"
+      />
       <ScrollArea>
         <div className="p-4 space-y-4">
-          {fonts.map((font) => (
+          {filters.map((filter) => (
             <Button
-              key={font}
+              key={filter}
               variant="secondary"
               size="lg"
-              className={cn(
-                "w-full h-16 justify-start text-left py-2 px-4",
-                activeFontFamily === font && "border border-blue-500"
-              )}
-              style={{
-                fontFamily: font,
-                fontSize: "16px",
-              }}
-              onClick={() => editor?.changeFontFamily(font)}
+              className="w-full h-16 justify-start text-left py-2 px-4"
+              onClick={() => editor?.changeImageFilter(filter)}
             >
-              {font}
+              {filter}
             </Button>
           ))}
         </div>
@@ -58,4 +52,4 @@ const FontSidebar = ({
   );
 };
 
-export { FontSidebar };
+export { ImageFilterSidebar };

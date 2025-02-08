@@ -8,7 +8,7 @@ import {
 } from "@/features/editor/types";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
-import { isRectType, isTextType } from "../utils";
+import { createFilter, isImageType, isRectType, isTextType } from "../utils";
 import {
   BORDER_RADIUS,
   CIRCLE_OPTIONS,
@@ -24,6 +24,7 @@ import {
   TEXT_OPTIONS,
   TRIANGLE_OPTIONS,
 } from "@/features/editor/constants";
+import { useClipboard } from "./use-clipboard";
 
 const buildEditor = ({
   canvas,
@@ -339,6 +340,38 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
+    changeImageFilter: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isImageType(object.type)) {
+          const imageObject = object as fabric.FabricImage;
+          imageObject.set({ cacheEnabled: false });
+          canvas.renderAll();
+
+          const effect = createFilter(value);
+
+          imageObject.filters = effect ? [effect] : [];
+
+          imageObject.applyFilters();
+          canvas.renderAll();
+        }
+      });
+    },
+    addImage: async (value) => {
+      const image = await fabric.FabricImage.fromURL(value, {
+        crossOrigin: "anonymous",
+      });
+
+      if (!image) {
+        return;
+      }
+
+      const workspace = getWorkspace();
+
+      image.scaleToWidth(workspace?.width || 0);
+      image.scaleToHeight(workspace?.height || 0);
+
+      addToCanvas(image);
+    },
     addText: (value, options) => {
       const object = new fabric.Textbox(value, {
         ...TEXT_OPTIONS,
@@ -581,6 +614,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [opacity, setOpacity] = useState(OPACITY);
   const [borderRadius, setBorderRadius] = useState(BORDER_RADIUS);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
+
+  useClipboard({ canvas });
 
   // to make the canvas and workspace responsive
   useAutoResize({ canvas, container });

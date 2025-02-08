@@ -16,6 +16,8 @@ import { PositionSidebar } from "@/features/editor/components/position-sidebar";
 import { OpacitySidebar } from "@/features/editor/components/opacity-sidebar";
 import { TextSidebar } from "@/features/editor/components/text-sidebar";
 import { FontSidebar } from "@/features/editor/components/font-sidebar";
+import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
+import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 
 const Editor = () => {
@@ -117,7 +119,17 @@ const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
-        
+        <ImagesSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <ImageFilterSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+
         <main className="flex-1 bg-muted overflow-auto relative flex flex-col">
           <Toolbar
             key={JSON.stringify(editor?.canvas.getActiveObject())}
