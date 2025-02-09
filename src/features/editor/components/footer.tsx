@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { workspaceZoomLevels } from "../constants";
+import { MinimizeIcon } from "lucide-react";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 
 interface FooterProps {
   editor: Editor | undefined;
@@ -53,6 +55,19 @@ const Footer = ({ editor }: FooterProps) => {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TooltipWrapper label="Reset zoom" side="top" sideOffset={10}>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-full"
+            onClick={() => {
+              editor?.autoZoom();
+              setValue(100);
+            }}
+          >
+            <MinimizeIcon className="size-4" />
+          </Button>
+        </TooltipWrapper>
       </div>
     </footer>
   );

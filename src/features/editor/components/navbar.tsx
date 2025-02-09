@@ -13,6 +13,7 @@ import {
   BsFiletypeJpg,
   BsFiletypeSvg,
 } from "react-icons/bs";
+import { useFilePicker } from "use-file-picker";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +35,15 @@ interface NavbarProps {
 }
 
 const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
+  const { openFilePicker } = useFilePicker({
+    accept: ".json",
+    multiple: false,
+    onFilesSuccessfullySelected: ({ plainFiles, filesContent }) => {
+      console.log("onFilesSuccessfullySelected", plainFiles, filesContent);
+      editor?.loadFromJson(filesContent[0]?.content);
+    },
+  });
+
   return (
     <nav className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
       <Logo />
@@ -47,7 +57,10 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="min-w-60">
-            <DropdownMenuItem className="flex items-center gap-x-2">
+            <DropdownMenuItem
+              onClick={openFilePicker}
+              className="flex items-center gap-x-2"
+            >
               <CiFileOn className="!size-8" />
               <div>
                 <p>Open</p>
@@ -106,7 +119,10 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-60">
-              <DropdownMenuItem className="flex items-center gap-x-2">
+              <DropdownMenuItem
+                onClick={() => editor?.saveAsJson()}
+                className="flex items-center gap-x-2"
+              >
                 <BsFiletypeJson className="!size-7" />
                 <div>
                   <p>JSON</p>
@@ -115,7 +131,10 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-x-2">
+              <DropdownMenuItem
+                onClick={() => editor?.saveAsPng()}
+                className="flex items-center gap-x-2"
+              >
                 <BsFiletypePng className="!size-7" />
                 <div>
                   <p>PNG</p>
@@ -124,7 +143,10 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-x-2">
+              <DropdownMenuItem
+                onClick={() => editor?.saveAsJpeg()}
+                className="flex items-center gap-x-2"
+              >
                 <BsFiletypeJpg className="!size-7" />
                 <div>
                   <p>JPG</p>
@@ -133,7 +155,10 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-x-2">
+              <DropdownMenuItem
+                onClick={() => editor?.saveAsSvg()}
+                className="flex items-center gap-x-2"
+              >
                 <BsFiletypeSvg className="!size-7" />
                 <div>
                   <p>SVG</p>

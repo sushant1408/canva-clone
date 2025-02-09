@@ -1,5 +1,6 @@
 import * as fabric from "fabric";
 import { RGBColor } from "react-color";
+import { v4 } from "uuid";
 
 function isTextType(type: string | undefined) {
   return type === "text" || type === "i-text" || type === "textbox";
@@ -111,7 +112,7 @@ function createFilter(value: string) {
         saturation: 0.7,
       });
       break;
-      case "noise":
+    case "noise":
       effect = new fabric.filters.Noise();
       break;
     default:
@@ -122,10 +123,36 @@ function createFilter(value: string) {
   return effect;
 }
 
+function downloadFile(file: string, type: string) {
+  const anchorEle = document.createElement("a");
+  anchorEle.href = file;
+  anchorEle.download = `${v4()}.${type}`;
+
+  document.body.appendChild(anchorEle);
+  anchorEle.click();
+  anchorEle.remove();
+}
+
+function transformText(objects: any) {
+  if (!objects) {
+    return;
+  }
+
+  objects.forEach((item: any) => {
+    if (item.objects) {
+      transformText(item.objects);
+    } else {
+      item.type === "text" && item.type === "textbox";
+    }
+  });
+}
+
 export {
   isTextType,
   isRectType,
   isImageType,
   rgbaObjectToString,
   createFilter,
+  downloadFile,
+  transformText,
 };

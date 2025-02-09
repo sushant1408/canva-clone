@@ -8,7 +8,14 @@ import {
 } from "@/features/editor/types";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
-import { createFilter, isImageType, isRectType, isTextType } from "../utils";
+import {
+  createFilter,
+  downloadFile,
+  isImageType,
+  isRectType,
+  isTextType,
+  transformText,
+} from "../utils";
 import {
   BORDER_RADIUS,
   CIRCLE_OPTIONS,
@@ -24,10 +31,10 @@ import {
   STROKE_WIDTH,
   TEXT_OPTIONS,
   TRIANGLE_OPTIONS,
-  WORKSPACE_ZOOM_STEP,
 } from "@/features/editor/constants";
 import { useClipboard } from "./use-clipboard";
 import { useHistory } from "./use-history";
+import { useHotkeys } from "./use-hotkeys";
 
 const buildEditor = ({
   canvas,
@@ -51,6 +58,7 @@ const buildEditor = ({
   setBrushWidth,
   selectedObjects,
   copy,
+  cut,
   paste,
   autoZoom,
   save,
@@ -59,6 +67,67 @@ const buildEditor = ({
   redo,
   undo,
 }: BuildEditorProps): Editor => {
+  const generateSaveOptions = () => {
+    const { height, left, top, width } = getWorkspace() as fabric.Rect;
+
+    return {
+      name: "Image",
+      format: "png" as fabric.ImageFormat,
+      quality: 1,
+      multiplier: 1,
+      height,
+      width,
+      left,
+      top,
+    };
+  };
+
+  const saveAsPng = () => {
+    const options = generateSaveOptions();
+
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "png");
+    autoZoom();
+  };
+
+  const saveAsSvg = () => {
+    const options = generateSaveOptions();
+
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "svg");
+    autoZoom();
+  };
+
+  const saveAsJpeg = () => {
+    const options = generateSaveOptions();
+
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "jpeg");
+    autoZoom();
+  };
+
+  const saveAsJson = async () => {
+    const dataUrl = canvas.toDatalessJSON(JSON_KEYS);
+
+    await transformText(dataUrl.objects);
+    const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(dataUrl, null, "\t")
+    )}`;
+
+    downloadFile(fileString, "json");
+  };
+
+  const loadFromJson = (json: string) => {
+    const data = JSON.parse(json);
+
+    canvas.loadFromJSON(data).then(() => {
+      autoZoom();
+    });
+  };
+
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "workspace");
   };
@@ -177,6 +246,15 @@ const buildEditor = ({
   };
 
   return {
+    // download options
+    saveAsJpeg,
+    saveAsJson,
+    saveAsPng,
+    saveAsSvg,
+
+    // load options
+    loadFromJson,
+
     // canvas functionalities
     changeWorkspaceSize: (value) => {
       const workspace = getWorkspace();
@@ -206,6 +284,7 @@ const buildEditor = ({
     },
     onCopy: () => copy(),
     onPaste: () => paste(),
+    onCut: () => cut(),
     delete: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.remove(object);
@@ -213,8 +292,8 @@ const buildEditor = ({
       canvas.discardActiveObject();
       canvas.renderAll();
     },
-    getWorkspace: () => getWorkspace(),
-    autoZoom: () => autoZoom(),
+    getWorkspace,
+    autoZoom,
     setZoom: (value) => {
       let zoomRatio = value * 0.5;
       zoomRatio = Math.min(Math.max(zoomRatio, 0.1), 2.5);
@@ -224,10 +303,10 @@ const buildEditor = ({
     },
 
     // undo/redo functionality
-    canRedo: () => canRedo(),
+    canRedo,
     onRedo: () => redo(),
     onUndo: () => undo(),
-    canUndo: () => canUndo(),
+    canUndo,
 
     // layer modifications
     bringForward: () => {
@@ -706,12 +785,14 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const { canRedo, canUndo, canvasHistory, redo, save, setHistoryIndex, undo } =
     useHistory({ canvas });
 
-  const { copy, paste } = useClipboard({ canvas });
+  const { copy, cut, paste } = useClipboard({ canvas });
 
   // to make the canvas and workspace responsive
   const { autoZoom } = useAutoResize({ canvas, container });
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback, save });
+
+  useHotkeys({ canvas, copy, cut, paste, undo, redo, save });
 
   const editor = useMemo(() => {
     if (canvas) {
@@ -738,6 +819,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
         setBrushWidth,
         selectedObjects,
         copy,
+        cut,
         paste,
         save,
         undo,
@@ -761,6 +843,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     brushWidth,
     selectedObjects,
     copy,
+    cut,
     paste,
     autoZoom,
     save,
@@ -819,7 +902,10 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
       setCanvas(initialCanvas);
       setContainer(initialContainer);
 
-      const currentState = JSON.stringify(initialCanvas.toDatalessJSON(JSON_KEYS));
+      // initial history stack
+      const currentState = JSON.stringify(
+        initialCanvas.toDatalessJSON(JSON_KEYS)
+      );
       canvasHistory.current = [currentState];
       setHistoryIndex(0);
     },

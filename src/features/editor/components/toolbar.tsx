@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsBorderWidth } from "react-icons/bs";
 import { RxTransparencyGrid } from "react-icons/rx";
 import {
@@ -37,6 +37,8 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
+  const workspace = editor?.getWorkspace();
+
   const initialFillColor = editor?.getActiveFillColor();
   const initialStrokeColor = editor?.getActiveStrokeColor();
   const initialFontFamily = editor?.getActiveFontFamily();
@@ -47,6 +49,7 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     editor?.getActiveFontStrikethrough() || false;
   const initialTextAlignment = editor?.getActiveTextAlignment() || "left";
   const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE;
+  const initialBackground = workspace?.fill || "#FFFFFF";
 
   const [properties, setProperties] = useState({
     fillColor: initialFillColor,
@@ -58,7 +61,15 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     fontStrikethrough: initialFontStrikethrough,
     textAlignment: initialTextAlignment,
     fontSize: initialFontSize,
+    workspaceBackground: initialBackground,
   });
+
+  useEffect(() => {
+    setProperties((prevState) => ({
+      ...prevState,
+      workspaceBackground: initialBackground,
+    }));
+  }, [initialBackground]);
 
   const selectedObject = editor?.selectedObjects[0];
   const selectedObjectType = editor?.selectedObjects[0]?.type;
@@ -157,7 +168,25 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
 
   if (editor?.selectedObjects.length === 0) {
     return (
-      <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2" />
+      <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2">
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Background color" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("settings")}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === "settings" && "bg-gray-100")}
+            >
+              <div
+                className="rounded-sm size-4 border"
+                style={{
+                  background: properties.workspaceBackground as string,
+                }}
+              />
+            </Button>
+          </TooltipWrapper>
+        </div>
+      </div>
     );
   }
 

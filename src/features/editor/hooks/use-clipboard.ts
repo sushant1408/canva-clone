@@ -9,16 +9,24 @@ const useClipboard = ({ canvas }: UseClipboardProps) => {
   const clipboard = useRef<any>(null);
 
   const copy = useCallback(() => {
-    return new Promise<void>((resolve, reject) => {
-      canvas
-        ?.getActiveObject()
-        ?.clone()
-        ?.then((cloned) => {
-          clipboard.current = cloned;
-          resolve();
+    return new Promise<{ activeObj: any; clonedObj: any }>(
+      (resolve, reject) => {
+        const activeObj = canvas?.getActiveObject();
+
+        activeObj?.clone()?.then((clonedObj) => {
+          clipboard.current = clonedObj;
+          resolve({ activeObj, clonedObj });
         });
-    });
+      }
+    );
   }, [canvas]);
+
+  const cut = useCallback(async () => {
+    const { activeObj } = await copy();
+
+    canvas?.remove(activeObj);
+    canvas?.discardActiveObject();
+  }, [copy, canvas]);
 
   const paste = useCallback(async () => {
     if (!clipboard.current) {
@@ -56,7 +64,7 @@ const useClipboard = ({ canvas }: UseClipboardProps) => {
     canvas?.requestRenderAll();
   }, [canvas]);
 
-  return { copy, paste };
+  return { copy, cut, paste };
 };
 
 export { useClipboard };

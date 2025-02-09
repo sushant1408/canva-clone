@@ -61,13 +61,14 @@ export type BuildEditorProps = {
   setBrushColor: (value: string) => void;
   setBrushWidth: (value: number) => void;
   selectedObjects: fabric.FabricObject[];
-  copy: () => Promise<void>;
+  copy: () => Promise<{ activeObj: any; clonedObj: any }>;
+  cut: () => void;
   paste: () => void;
   canUndo: () => boolean;
   undo: () => void;
   canRedo: () => boolean;
   redo: () => void;
-  save: (value?: boolean) => void;
+  save: (skip?: boolean) => void;
 };
 
 export interface Editor {
@@ -75,7 +76,8 @@ export interface Editor {
   selectedObjects: fabric.FabricObject[];
   enableDrawingMode: () => void;
   disableDrawingMode: () => void;
-  onCopy: () => Promise<void>;
+  onCopy: () => Promise<{ activeObj: any; clonedObj: any }>;
+  onCut: () => void;
   onPaste: () => void;
   delete: () => void;
   bringForward: () => void;
@@ -132,4 +134,9 @@ export interface Editor {
   onUndo: () => void;
   canRedo: () => boolean;
   onRedo: () => void;
+  saveAsJpeg: () => void;
+  saveAsJson: () => void;
+  saveAsPng: () => void;
+  saveAsSvg: () => void;
+  loadFromJson: (json: string) => void;
 }
