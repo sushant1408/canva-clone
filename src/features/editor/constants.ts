@@ -50,6 +50,8 @@ export const fontSizes = [
   104, 120, 144,
 ];
 
+export const workspaceZoomLevels = [10, 25, 50, 75, 100, 125, 200, 300];
+
 export const filters = [
   "none",
   "polaroid",
@@ -86,6 +88,8 @@ export const BORDER_RADIUS = 0;
 export const FONT_FAMILY = "Arial";
 export const FONT_SIZE = 32;
 export const FONT_WEIGHT = 400;
+
+export const WORKSPACE_ZOOM_STEP = 0.05;
 
 export const CIRCLE_OPTIONS = {
   radius: 200,

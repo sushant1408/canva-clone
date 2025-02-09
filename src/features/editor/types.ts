@@ -41,6 +41,7 @@ export type TextAlignment = "left" | "center" | "right" | "justify";
 
 export type BuildEditorProps = {
   canvas: fabric.Canvas;
+  autoZoom: () => void;
   fillColor: string;
   strokeColor: string;
   strokeWidth: number;
@@ -117,4 +118,9 @@ export interface Editor {
   getActiveFontSize: () => number;
   getBrushColor: () => string;
   getBrushWidth: () => number;
+  changeWorkspaceSize: (value: { height: number; width: number }) => void;
+  changeWorkspaceBackground: (value: string) => void;
+  getWorkspace: () => fabric.FabricObject | undefined;
+  autoZoom: () => void;
+  setZoom: (value: number) => void;
 }

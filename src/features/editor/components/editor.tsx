@@ -19,7 +19,19 @@ import { FontSidebar } from "@/features/editor/components/font-sidebar";
 import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
 import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
+import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
+
+// TODO: add shadows sidebar for shapes, text and images
+// TODO: add drawing brush type options
+// TODO: try to fix group alignment
+// TODO: add flip option for images
+// TODO: add layers sidebar with draggable layers list
+// TODO: add floating options for active object
+// TODO: add gradient support forn shapes, text and workspace
+// TODO: add background image support for workspace
+// TODO: add lock/unlock layer functionality
+// TODO: try to fix image filter bug
 
 const Editor = () => {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
@@ -58,7 +70,7 @@ const Editor = () => {
 
   useEffect(() => {
     const canvas = new fabric.Canvas(canvasRef.current!, {
-      controlsAboveOverlay: true, // to show the controls for the objects outside the workarea
+      controlsAboveOverlay: true, // to show the controls for the objects outside the workspace
       preserveObjectStacking: true,
     });
 
@@ -135,6 +147,11 @@ const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
+        <SettingsSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
 
         <main className="flex-1 bg-muted overflow-auto relative flex flex-col">
           <Toolbar
@@ -146,7 +163,10 @@ const Editor = () => {
           <div ref={containerRef} className="flex-1 h-[calc(100%-124px)]">
             <canvas ref={canvasRef} />
           </div>
-          <Footer />
+          <Footer
+            key={JSON.stringify(editor?.canvas.getZoom())}
+            editor={editor}
+          />
         </main>
       </div>
     </div>

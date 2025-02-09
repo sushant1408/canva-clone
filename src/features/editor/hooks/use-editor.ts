@@ -23,6 +23,7 @@ import {
   STROKE_WIDTH,
   TEXT_OPTIONS,
   TRIANGLE_OPTIONS,
+  WORKSPACE_ZOOM_STEP,
 } from "@/features/editor/constants";
 import { useClipboard } from "./use-clipboard";
 
@@ -49,6 +50,7 @@ const buildEditor = ({
   selectedObjects,
   copy,
   paste,
+  autoZoom,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "workspace");
@@ -169,6 +171,18 @@ const buildEditor = ({
 
   return {
     // canvas functionalities
+    changeWorkspaceSize: (value) => {
+      const workspace = getWorkspace();
+
+      workspace?.set(value);
+      autoZoom();
+    },
+    changeWorkspaceBackground: (value) => {
+      const workspace = getWorkspace();
+
+      workspace?.set({ fill: value });
+      canvas.renderAll();
+    },
     enableDrawingMode: () => {
       canvas.discardActiveObject();
       canvas.renderAll();
@@ -189,6 +203,15 @@ const buildEditor = ({
       });
       canvas.discardActiveObject();
       canvas.renderAll();
+    },
+    getWorkspace: () => getWorkspace(),
+    autoZoom: () => autoZoom(),
+    setZoom: (value) => {
+      let zoomRatio = value * 0.5;
+      zoomRatio = Math.min(Math.max(zoomRatio, 0.1), 2.5);
+
+      const center = canvas.getCenterPoint();
+      canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoomRatio);
     },
 
     // layer modifications
@@ -668,7 +691,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const { copy, paste } = useClipboard({ canvas });
 
   // to make the canvas and workspace responsive
-  useAutoResize({ canvas, container });
+  const { autoZoom } = useAutoResize({ canvas, container });
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
 
@@ -676,6 +699,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     if (canvas) {
       return buildEditor({
         canvas,
+        autoZoom,
         fillColor,
         strokeColor,
         setFillColor,
@@ -715,6 +739,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     selectedObjects,
     copy,
     paste,
+    autoZoom,
   ]);
 
   const init = useCallback(
