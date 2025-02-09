@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
+import debounce from "lodash.debounce";
 
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import { Navbar } from "@/features/editor/components/navbar";
@@ -22,6 +23,7 @@ import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 import { ResponseType } from "@/features/projects/api/use-get-project";
+import { useUpdateProject } from "@/features/projects/api/use-update-project";
 
 // TODO: add shadows sidebar for shapes, text and images
 // TODO: add drawing brush type options
@@ -33,12 +35,24 @@ import { ResponseType } from "@/features/projects/api/use-get-project";
 // TODO: add background image support for workspace
 // TODO: add lock/unlock layer functionality
 // TODO: try to fix image filter bug
+// TODO: add rename project in editor navbar
 
 interface EditorProps {
   initialData: ResponseType["data"];
 }
 
 const Editor = ({ initialData }: EditorProps) => {
+  const { mutate } = useUpdateProject(initialData.id);
+
+  const debounceSave = useCallback(
+    debounce(
+      (values: { json: string; height: number; width: number }) =>
+        mutate(values),
+      1000
+    ),
+    [mutate]
+  );
+
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
   const onClearSelection = useCallback(() => {
@@ -48,7 +62,11 @@ const Editor = ({ initialData }: EditorProps) => {
   }, [activeTool]);
 
   const { init, editor } = useEditor({
+    defaultState: initialData.json,
+    defaultWidth: initialData.width,
+    defaultHeight: initialData.height,
     clearSelectionCallback: onClearSelection,
+    saveCallback: debounceSave,
   });
 
   const onChangeActiveTool = useCallback(
@@ -95,6 +113,7 @@ const Editor = ({ initialData }: EditorProps) => {
         editor={editor}
         activeTool={activeTool}
         onChangeActiveTool={onChangeActiveTool}
+        id={initialData.id}
       />
       <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
         <Sidebar

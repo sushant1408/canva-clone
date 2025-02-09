@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import * as fabric from "fabric";
 
 import {
@@ -36,6 +36,7 @@ import { useClipboard } from "./use-clipboard";
 import { useHistory } from "./use-history";
 import { useHotkeys } from "./use-hotkeys";
 import { useWindowEvent } from "./use-window-event";
+import { useLoadState } from "./use-load-state";
 
 const buildEditor = ({
   canvas,
@@ -762,10 +763,28 @@ const buildEditor = ({
 };
 
 interface UseEditorProps {
+  defaultState: string;
+  defaultWidth: number;
+  defaultHeight: number;
   clearSelectionCallback?: () => void;
+  saveCallback?: (values: {
+    json: string;
+    height: number;
+    width: number;
+  }) => void;
 }
 
-const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
+const useEditor = ({
+  defaultHeight,
+  defaultState,
+  defaultWidth,
+  clearSelectionCallback,
+  saveCallback,
+}: UseEditorProps) => {
+  const initialState = useRef(defaultState);
+  const initialWidth = useRef(defaultWidth);
+  const initialHeight = useRef(defaultHeight);
+
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [selectedObjects, setSelectedObjects] = useState<fabric.FabricObject[]>(
@@ -786,7 +805,7 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   useWindowEvent();
 
   const { canRedo, canUndo, canvasHistory, redo, save, setHistoryIndex, undo } =
-    useHistory({ canvas });
+    useHistory({ canvas, saveCallback });
 
   const { copy, cut, paste } = useClipboard({ canvas });
 
@@ -796,6 +815,14 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback, save });
 
   useHotkeys({ canvas, copy, cut, paste, undo, redo, save });
+
+  useLoadState({
+    canvas,
+    setHistoryIndex,
+    autoZoom,
+    initialState,
+    canvasHistory,
+  });
 
   const editor = useMemo(() => {
     if (canvas) {
@@ -878,8 +905,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
 
       // actual workspace/page
       const initialWorkspace = new fabric.Rect({
-        width: 900,
-        height: 1200,
+        width: initialWidth.current,
+        height: initialHeight.current,
         name: "workspace",
         fill: "white",
         selectable: false,

@@ -1,6 +1,7 @@
 import {
   ChevronDownIcon,
   DownloadIcon,
+  LoaderIcon,
   MousePointerClickIcon,
   Redo2Icon,
   Undo2Icon,
@@ -12,6 +13,7 @@ import {
   BsFiletypePng,
   BsFiletypeJpg,
   BsFiletypeSvg,
+  BsCloudSlash,
 } from "react-icons/bs";
 import { useFilePicker } from "use-file-picker";
 
@@ -28,22 +30,61 @@ import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
 import { UserButton } from "@/features/auth/components/user-button";
+import { useMutationState } from "@tanstack/react-query";
+import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 
 interface NavbarProps {
+  id: string;
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
   editor: Editor | undefined;
 }
 
-const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
+const Navbar = ({
+  id,
+  activeTool,
+  editor,
+  onChangeActiveTool,
+}: NavbarProps) => {
+  const data = useMutationState({
+    filters: {
+      mutationKey: ["project", { id }],
+      exact: true,
+    },
+    select: (mutation) => {
+      return {
+        status: mutation.state.status,
+        data: mutation.state.data,
+      };
+    },
+  });
+
+  const currentStatus = data[data.length - 1]?.status;
+  const isError = currentStatus === "error";
+  const isPending = currentStatus === "pending";
+
+  const project = data[data.length - 1]?.data as any;
+
   const { openFilePicker } = useFilePicker({
     accept: ".json",
     multiple: false,
-    onFilesSuccessfullySelected: ({ plainFiles, filesContent }) => {
-      console.log("onFilesSuccessfullySelected", plainFiles, filesContent);
+    onFilesSuccessfullySelected: ({
+      plainFiles,
+      filesContent,
+    }: {
+      plainFiles: any;
+      filesContent: any;
+    }) => {
       editor?.loadFromJson(filesContent[0]?.content);
     },
   });
+
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    setName(project?.data?.name);
+  }, [project?.data?.name]);
 
   return (
     <nav className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
@@ -106,9 +147,33 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
         </TooltipWrapper>
 
         <Separator orientation="vertical" className="mx-2" />
-        <div className="flex items-center gap-x-2">
-          <BsCloudCheck className="size-[20px] text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">Saved</p>
+
+        {!isPending && !isError && (
+          <div className="flex items-center gap-x-2">
+            <BsCloudCheck className="size-[20px] text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Saved</p>
+          </div>
+        )}
+        {!isPending && isError && (
+          <div className="flex items-center gap-x-2">
+            <BsCloudSlash className="size-[20px] text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Failed to save</p>
+          </div>
+        )}
+        {isPending && (
+          <div className="flex items-center gap-x-2">
+            <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Saving...</p>
+          </div>
+        )}
+
+        <div className="mx-auto">
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border-0 hover:border"
+            disabled={isPending}
+          />
         </div>
 
         <div className="ml-auto flex items-center gap-x-4">

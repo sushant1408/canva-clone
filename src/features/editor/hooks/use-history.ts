@@ -5,9 +5,14 @@ import { JSON_KEYS } from "../constants";
 
 interface UseHistoryProps {
   canvas: fabric.Canvas | null;
+  saveCallback?: (values: {
+    json: string;
+    height: number;
+    width: number;
+  }) => void;
 }
 
-const useHistory = ({ canvas }: UseHistoryProps) => {
+const useHistory = ({ canvas, saveCallback }: UseHistoryProps) => {
   const [historyIndex, setHistoryIndex] = useState(0);
   const canvasHistory = useRef<string[]>([]);
   const skipSave = useRef(false);
@@ -33,8 +38,16 @@ const useHistory = ({ canvas }: UseHistoryProps) => {
         canvasHistory.current.push(json);
         setHistoryIndex(canvasHistory.current.length - 1);
       }
+
+      const workspace = canvas
+        .getObjects()
+        .find((object) => object.name === "workspace");
+      const height = workspace?.height || 0;
+      const width = workspace?.width || 0;
+
+      saveCallback?.({ json, height, width });
     },
-    [canvas]
+    [canvas, saveCallback]
   );
 
   const undo = useCallback(() => {
