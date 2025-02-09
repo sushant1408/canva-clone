@@ -35,6 +35,7 @@ import {
 import { useClipboard } from "./use-clipboard";
 import { useHistory } from "./use-history";
 import { useHotkeys } from "./use-hotkeys";
+import { useWindowEvent } from "./use-window-event";
 
 const buildEditor = ({
   canvas,
@@ -781,6 +782,8 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
   const [brushColor, setBrushColor] = useState(STROKE_COLOR);
   const [brushWidth, setBrushWidth] = useState(STROKE_WIDTH);
+
+  useWindowEvent();
 
   const { canRedo, canUndo, canvasHistory, redo, save, setHistoryIndex, undo } =
     useHistory({ canvas });

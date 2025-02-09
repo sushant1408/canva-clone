@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { AppProviders } from "@/components/app-providers";
+import { Toaster } from "@/components/ui/sonner";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <AppProviders>{children}</AppProviders>
+        <Toaster />
       </body>
     </html>
   );
