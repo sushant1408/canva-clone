@@ -3,6 +3,9 @@
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { FormEvent, useState } from "react";
+import { toast } from "sonner";
+import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,10 +18,7 @@ import {
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FormEvent, useState } from "react";
 import { useSignUp } from "../hooks/use-sign-up";
-import { toast } from "sonner";
-import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
 
 const SignUpCard = () => {
   const [name, setName] = useState("");

@@ -27,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
+import { UserButton } from "@/features/auth/components/user-button";
 
 interface NavbarProps {
   activeTool: ActiveTool;
@@ -169,7 +170,7 @@ const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* TODO: add user button here */}
+          <UserButton />
         </div>
       </div>
     </nav>
