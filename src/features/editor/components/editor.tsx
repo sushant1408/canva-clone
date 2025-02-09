@@ -21,6 +21,7 @@ import { ImageFilterSidebar } from "@/features/editor/components/image-filters-s
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
+import { ResponseType } from "@/features/projects/api/use-get-project";
 
 // TODO: add shadows sidebar for shapes, text and images
 // TODO: add drawing brush type options
@@ -33,7 +34,11 @@ import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 // TODO: add lock/unlock layer functionality
 // TODO: try to fix image filter bug
 
-const Editor = () => {
+interface EditorProps {
+  initialData: ResponseType["data"];
+}
+
+const Editor = ({ initialData }: EditorProps) => {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
   const onClearSelection = useCallback(() => {
@@ -86,7 +91,11 @@ const Editor = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <Navbar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+      <Navbar
+        editor={editor}
+        activeTool={activeTool}
+        onChangeActiveTool={onChangeActiveTool}
+      />
       <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
         <Sidebar
           activeTool={activeTool}

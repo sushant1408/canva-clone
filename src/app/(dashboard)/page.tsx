@@ -1,11 +1,12 @@
 import { protectServer } from "@/features/auth/utils";
+import { Banner } from "./banner";
 
 export default async function HomePage() {
   await protectServer();
 
   return (
-    <div>
-      You are logged in
+    <div className="flex flex-col space-y-6 max-w-screen-xl mx-auto pb-10">
+      <Banner />
     </div>
   );
 }
