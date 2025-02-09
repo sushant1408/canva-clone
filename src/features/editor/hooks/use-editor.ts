@@ -16,6 +16,7 @@ import {
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT,
+  JSON_KEYS,
   OPACITY,
   RECTANGLE_OPTIONS,
   STROKE_COLOR,
@@ -26,6 +27,7 @@ import {
   WORKSPACE_ZOOM_STEP,
 } from "@/features/editor/constants";
 import { useClipboard } from "./use-clipboard";
+import { useHistory } from "./use-history";
 
 const buildEditor = ({
   canvas,
@@ -51,6 +53,11 @@ const buildEditor = ({
   copy,
   paste,
   autoZoom,
+  save,
+  canRedo,
+  canUndo,
+  redo,
+  undo,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "workspace");
@@ -176,12 +183,14 @@ const buildEditor = ({
 
       workspace?.set(value);
       autoZoom();
+      save();
     },
     changeWorkspaceBackground: (value) => {
       const workspace = getWorkspace();
 
       workspace?.set({ fill: value });
       canvas.renderAll();
+      save();
     },
     enableDrawingMode: () => {
       canvas.discardActiveObject();
@@ -213,6 +222,12 @@ const buildEditor = ({
       const center = canvas.getCenterPoint();
       canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoomRatio);
     },
+
+    // undo/redo functionality
+    canRedo: () => canRedo(),
+    onRedo: () => redo(),
+    onUndo: () => undo(),
+    canUndo: () => canUndo(),
 
     // layer modifications
     bringForward: () => {
@@ -688,12 +703,15 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
   const [brushColor, setBrushColor] = useState(STROKE_COLOR);
   const [brushWidth, setBrushWidth] = useState(STROKE_WIDTH);
 
+  const { canRedo, canUndo, canvasHistory, redo, save, setHistoryIndex, undo } =
+    useHistory({ canvas });
+
   const { copy, paste } = useClipboard({ canvas });
 
   // to make the canvas and workspace responsive
   const { autoZoom } = useAutoResize({ canvas, container });
 
-  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
+  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback, save });
 
   const editor = useMemo(() => {
     if (canvas) {
@@ -721,6 +739,11 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
         selectedObjects,
         copy,
         paste,
+        save,
+        undo,
+        redo,
+        canUndo,
+        canRedo,
       });
     }
 
@@ -740,6 +763,11 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
     copy,
     paste,
     autoZoom,
+    save,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   ]);
 
   const init = useCallback(
@@ -790,6 +818,10 @@ const useEditor = ({ clearSelectionCallback }: UseEditorProps) => {
 
       setCanvas(initialCanvas);
       setContainer(initialContainer);
+
+      const currentState = JSON.stringify(initialCanvas.toDatalessJSON(JSON_KEYS));
+      canvasHistory.current = [currentState];
+      setHistoryIndex(0);
     },
     []
   );

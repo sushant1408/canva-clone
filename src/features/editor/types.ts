@@ -63,6 +63,11 @@ export type BuildEditorProps = {
   selectedObjects: fabric.FabricObject[];
   copy: () => Promise<void>;
   paste: () => void;
+  canUndo: () => boolean;
+  undo: () => void;
+  canRedo: () => boolean;
+  redo: () => void;
+  save: (value?: boolean) => void;
 };
 
 export interface Editor {
@@ -123,4 +128,8 @@ export interface Editor {
   getWorkspace: () => fabric.FabricObject | undefined;
   autoZoom: () => void;
   setZoom: (value: number) => void;
+  canUndo: () => boolean;
+  onUndo: () => void;
+  canRedo: () => boolean;
+  onRedo: () => void;
 }

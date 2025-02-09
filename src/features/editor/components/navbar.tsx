@@ -24,15 +24,16 @@ import {
 import { Logo } from "@/features/editor/components/logo";
 import { Separator } from "@/components/ui/separator";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { ActiveTool } from "@/features/editor/types";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
+  editor: Editor | undefined;
 }
 
-const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
+const Navbar = ({ activeTool, editor, onChangeActiveTool }: NavbarProps) => {
   return (
     <nav className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
       <Logo />
@@ -70,12 +71,22 @@ const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
           </Button>
         </TooltipWrapper>
         <TooltipWrapper label="Undo" side="bottom" sideOffset={10}>
-          <Button size="icon" variant="ghost" className="">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => editor?.onUndo()}
+            disabled={!editor?.canUndo()}
+          >
             <Undo2Icon />
           </Button>
         </TooltipWrapper>
         <TooltipWrapper label="Redo" side="bottom" sideOffset={10}>
-          <Button size="icon" variant="ghost" className="">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => editor?.onRedo()}
+            disabled={!editor?.canRedo()}
+          >
             <Redo2Icon />
           </Button>
         </TooltipWrapper>

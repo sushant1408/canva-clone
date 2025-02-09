@@ -137,6 +137,17 @@ export const TEXT_ALIGNMENT_OPTIONS: TextAlignment[] = [
   "justify",
 ];
 
+export const JSON_KEYS = [
+  "name",
+  "gradientAngle",
+  "selectable",
+  "editable",
+  "hasControls",
+  "linkData",
+  "extensionType",
+  "extension",
+];
+
 export const POLYGON_MATRICES = {
   pentagon: [
     { x: 55, y: 0 },

@@ -5,12 +5,14 @@ interface UseCanvasEventsProps {
   canvas: fabric.Canvas | null;
   setSelectedObjects: (objects: fabric.FabricObject[]) => void;
   clearSelectionCallback?: () => void;
+  save: () => void;
 }
 
 const useCanvasEvents = ({
   canvas,
   setSelectedObjects,
-  clearSelectionCallback
+  clearSelectionCallback,
+  save,
 }: UseCanvasEventsProps) => {
   useEffect(() => {
     if (canvas) {
@@ -24,6 +26,9 @@ const useCanvasEvents = ({
         setSelectedObjects([]);
         clearSelectionCallback?.();
       });
+      canvas.on("object:added", () => save());
+      canvas.on("object:modified", () => save());
+      canvas.on("object:removed", () => save());
     }
 
     return () => {
@@ -31,9 +36,12 @@ const useCanvasEvents = ({
         canvas.off("selection:created");
         canvas.off("selection:updated");
         canvas.off("selection:cleared");
+        canvas.off("object:added");
+        canvas.off("object:modified");
+        canvas.off("object:removed");
       }
     };
-  }, [canvas, clearSelectionCallback]);
+  }, [canvas, clearSelectionCallback, save]);
 };
 
 export { useCanvasEvents };
