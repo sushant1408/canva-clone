@@ -512,6 +512,13 @@ const buildEditor = ({
         canvas.freeDrawingBrush.width = value;
       }
     },
+    changeSelectable: (value) => {
+      canvas.getActiveObjects().forEach((object) => {
+        object.set({ selectable: value });
+      });
+      canvas.discardActiveObject();
+      canvas.renderAll();
+    },
 
     // add elements
     addImage: async (value) => {
@@ -755,6 +762,15 @@ const buildEditor = ({
     },
     getBrushWidth: () => {
       return canvas.freeDrawingBrush?.width || brushWidth;
+    },
+    getActiveSelectable: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return true;
+      }
+
+      return selectedObject.get("selectable") || true;
     },
 
     canvas,

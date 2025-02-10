@@ -16,7 +16,8 @@ export type ActiveTool =
   | "ai"
   | "remove-bg"
   | "templates"
-  | "position";
+  | "position"
+  | "layers";
 
 export const selectionDependentTools: ActiveTool[] = [
   "fill",
@@ -101,6 +102,7 @@ export interface Editor {
   changeImageFilter: (value: string) => void;
   changeBrushColor: (value: string) => void;
   changeBrushWidth: (value: number) => void;
+  changeSelectable: (value: boolean) => void;
   addImage: (value: string) => void;
   addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
@@ -125,6 +127,7 @@ export interface Editor {
   getActiveFontSize: () => number;
   getBrushColor: () => string;
   getBrushWidth: () => number;
+  getActiveSelectable: () => boolean;
   changeWorkspaceSize: (value: { height: number; width: number }) => void;
   changeWorkspaceBackground: (value: string) => void;
   getWorkspace: () => fabric.FabricObject | undefined;

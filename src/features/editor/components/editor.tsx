@@ -21,6 +21,7 @@ import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
 import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
+import { LayersSidebar } from "@/features/editor/components/layers-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 import { ResponseType } from "@/features/projects/api/use-get-project";
 import { useUpdateProject } from "@/features/projects/api/use-update-project";
@@ -30,12 +31,12 @@ import { useUpdateProject } from "@/features/projects/api/use-update-project";
 // TODO: try to fix group alignment
 // TODO: add flip option for images
 // TODO: add layers sidebar with draggable layers list
-// TODO: add floating options for active object
 // TODO: add gradient support for shapes, text and workspace
 // TODO: add background image support for workspace
-// TODO: add lock/unlock layer functionality
 // TODO: try to fix image filter bug
 // TODO: add rename project in editor navbar
+// TODO: fix loader on every project when cloning/deleting
+// TODO: add group/ungroup functionality
 
 interface EditorProps {
   initialData: ResponseType["data"];
@@ -176,6 +177,11 @@ const Editor = ({ initialData }: EditorProps) => {
           editor={editor}
         />
         <SettingsSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <LayersSidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}

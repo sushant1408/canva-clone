@@ -10,6 +10,9 @@ import {
   type LucideIcon,
   TrashIcon,
   CopyIcon,
+  LockIcon,
+  UnlockIcon,
+  LayersIcon,
 } from "lucide-react";
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { TbColorFilter } from "react-icons/tb";
@@ -50,6 +53,7 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
   const initialTextAlignment = editor?.getActiveTextAlignment() || "left";
   const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE;
   const initialBackground = workspace?.fill || "#FFFFFF";
+  const initialSelectable = editor?.getActiveSelectable() || false;
 
   const [properties, setProperties] = useState({
     fillColor: initialFillColor,
@@ -62,6 +66,7 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     textAlignment: initialTextAlignment,
     fontSize: initialFontSize,
     workspaceBackground: initialBackground,
+    selectable: initialSelectable,
   });
 
   useEffect(() => {
@@ -166,6 +171,20 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     }));
   };
 
+  const toggleSelectable = () => {
+    if (!selectedObject) {
+      return;
+    }
+
+    const newValue = !properties.selectable;
+
+    editor.changeSelectable(newValue);
+    setProperties((prevState) => ({
+      ...prevState,
+      selectable: newValue,
+    }));
+  };
+
   if (editor?.selectedObjects.length === 0) {
     return (
       <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2">
@@ -183,6 +202,18 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
                   background: properties.workspaceBackground as string,
                 }}
               />
+            </Button>
+          </TooltipWrapper>
+        </div>
+        <Separator orientation="vertical" />
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Layers" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("layers")}
+              size="icon"
+              variant="ghost"
+            >
+              <LayersIcon className="size-4" />
             </Button>
           </TooltipWrapper>
         </div>
@@ -358,6 +389,21 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
         </Button>
       </div>
       <div className="flex items-center h-full justify-center">
+        <TooltipWrapper
+          label={properties.selectable ? "Lock" : "Unlock"}
+          side="bottom"
+          sideOffset={5}
+        >
+          <Button onClick={toggleSelectable} size="icon" variant="ghost">
+            {properties.selectable ? (
+              <LockIcon className="size-4" />
+            ) : (
+              <UnlockIcon className="size-4" />
+            )}
+          </Button>
+        </TooltipWrapper>
+      </div>
+      <div className="flex items-center h-full justify-center">
         <TooltipWrapper label="Duplicate" side="bottom" sideOffset={5}>
           <Button
             onClick={async () => {
@@ -372,6 +418,17 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
         </TooltipWrapper>
       </div>
       <Separator orientation="vertical" />
+      <div className="flex items-center h-full justify-center">
+        <TooltipWrapper label="Layers" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => onChangeActiveTool("layers")}
+            size="icon"
+            variant="ghost"
+          >
+            <LayersIcon className="size-4" />
+          </Button>
+        </TooltipWrapper>
+      </div>
       <div className="flex items-center h-full justify-center">
         <TooltipWrapper label="Delete" side="bottom" sideOffset={5}>
           <Button onClick={() => editor?.delete()} size="icon" variant="ghost">
