@@ -31,7 +31,7 @@ import { useUpdateProject } from "@/features/projects/api/use-update-project";
 // TODO: add flip option for images
 // TODO: add layers sidebar with draggable layers list
 // TODO: add floating options for active object
-// TODO: add gradient support forn shapes, text and workspace
+// TODO: add gradient support for shapes, text and workspace
 // TODO: add background image support for workspace
 // TODO: add lock/unlock layer functionality
 // TODO: try to fix image filter bug

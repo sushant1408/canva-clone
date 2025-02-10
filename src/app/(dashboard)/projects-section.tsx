@@ -36,6 +36,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import Image from "next/image";
+import { useDuplicateProject } from "@/features/projects/api/use-duplicate-project";
+import { toast } from "sonner";
+import { useDeleteProject } from "@/features/projects/api/use-delete-project";
+import { useConfirm } from "@/hooks/use-confirm";
 
 const ProjectsSection = () => {
   const router = useRouter();
@@ -47,9 +51,49 @@ const ProjectsSection = () => {
 
   const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useGetProjects();
+  const { mutate: duplicateMutate, isPending: isDuplicating } =
+    useDuplicateProject();
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteProject();
+
+  const [ConfirmationDialog, confirm] = useConfirm({
+    title: "Are you sure?",
+    message: "You are about to delete this project.",
+  });
 
   const onChangeViewMethod = () => {
     setViewMethod(viewMethod === "grid" ? "list" : "grid");
+  };
+
+  const onCopy = (id: string) => {
+    duplicateMutate(
+      { id },
+      {
+        onSuccess: () => {
+          toast.success("Project duplicated successfully");
+        },
+        onError: () => {
+          toast.error("Failed duplicate the project");
+        },
+      }
+    );
+  };
+
+  const onDelete = async (id: string) => {
+    const ok = await confirm();
+
+    if (ok) {
+      deleteMutate(
+        { id },
+        {
+          onSuccess: () => {
+            toast.success("Project deleted successfully");
+          },
+          onError: () => {
+            toast.error("Failed delete the project");
+          },
+        }
+      );
+    }
   };
 
   if (status === "pending") {
@@ -77,7 +121,7 @@ const ProjectsSection = () => {
     );
   }
 
-  if (!data?.pages.length) {
+  if (!data?.pages.length || !data.pages[0].data.length) {
     return (
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Recent projects</h3>
@@ -91,6 +135,7 @@ const ProjectsSection = () => {
 
   return (
     <div className="space-y-4">
+      <ConfirmationDialog />
       <div className="flex w-full items-center justify-between">
         <h3 className="font-semibold text-lg">Recent projects</h3>
         <TooltipWrapper
@@ -118,16 +163,28 @@ const ProjectsSection = () => {
                   onClick={() => router.push(`/editor/${project.id}`)}
                   className="flex flex-col h-full w-full cursor-pointer gap-y-2"
                 >
-                  <div className="h-full w-full rounded-md bg-muted aspect-square px-8 pt-4 relative group">
+                  <div className="h-full w-full rounded-md bg-muted aspect-square px-8 pt-4 relative group hover:opacity-75 overflow-hidden">
                     {project.thumbnailUrl ? (
-                      <Image alt={project.name} src={project.thumbnailUrl} />
+                      // <Image alt={project.name} src={project.thumbnailUrl} />
+                      <></>
                     ) : (
                       <div className="bg-white h-full w-full" />
                     )}
 
+                    <div className="absolute inset-0 top-0 left-0 opacity-0 group-hover:opacity-100 bg-black/15 z-[4]" />
+
+                    {isDuplicating || isDeleting ? (
+                      <div className="absolute inset-0 top-0 left-0 bg-black/15 z-[4] flex items-center justify-center">
+                        <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
+                      </div>
+                    ) : null}
+
                     <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
                           size="icon"
                           variant="secondary"
                           className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 z-[10]"
@@ -149,11 +206,25 @@ const ProjectsSection = () => {
                           </p>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="h-10 cursor-pointer">
+                        <DropdownMenuItem
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onCopy(project.id);
+                          }}
+                          disabled={isDuplicating || isDeleting}
+                          className="h-10 cursor-pointer"
+                        >
                           <CopyIcon className="size-4 mr-2" />
                           Make a copy
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="h-10 cursor-pointer">
+                        <DropdownMenuItem
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(project.id);
+                          }}
+                          disabled={isDuplicating || isDeleting}
+                          className="h-10 cursor-pointer"
+                        >
                           <TrashIcon className="size-4 mr-2" />
                           Delete
                         </DropdownMenuItem>
@@ -161,7 +232,7 @@ const ProjectsSection = () => {
                     </DropdownMenu>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-medium">{project.name}</span>
+                    <span className="font-medium truncate">{project.name}</span>
                     <p className="text-xs text-muted-foreground">
                       {project.width} x {project.height} px
                     </p>
@@ -216,11 +287,23 @@ const ProjectsSection = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-60">
-                          <DropdownMenuItem className="h-10 cursor-pointer">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onCopy(project.id);
+                            }}
+                            className="h-10 cursor-pointer"
+                          >
                             <CopyIcon className="size-4 mr-2" />
                             Make a copy
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="h-10 cursor-pointer">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDelete(project.id);
+                            }}
+                            className="h-10 cursor-pointer"
+                          >
                             <TrashIcon className="size-4 mr-2" />
                             Delete
                           </DropdownMenuItem>

@@ -138,6 +138,71 @@ const app = new Hono()
 
       return c.json({ data: data[0] }, 200);
     }
+  )
+  .post(
+    "/:id/duplicate",
+    verifyAuth(),
+    zValidator("param", projectsInsertSchema.pick({ id: true })),
+    async (c) => {
+      const auth = c.get("authUser");
+      const { id } = c.req.valid("param");
+
+      if (!auth.token?.id) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const data = await db
+        .select()
+        .from(projects)
+        .where(and(eq(projects.id, id!), eq(projects.userId, auth.token.id)));
+
+      if (data.length === 0) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const clonedData = await db
+        .insert(projects)
+        .values({
+          name: `Copy of ${data[0].name}`,
+          json: data[0].json,
+          height: data[0].height,
+          width: data[0].width,
+          userId: auth.token.id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .returning();
+
+      if (!clonedData[0]) {
+        return c.json({ error: "Something went wrong" }, 400);
+      }
+
+      return c.json({ data: clonedData[0] }, 200);
+    }
+  )
+  .delete(
+    "/:id",
+    verifyAuth(),
+    zValidator("param", projectsInsertSchema.pick({ id: true })),
+    async (c) => {
+      const auth = c.get("authUser");
+      const { id } = c.req.valid("param");
+
+      if (!auth.token?.id) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const data = await db
+        .delete(projects)
+        .where(and(eq(projects.id, id!), eq(projects.userId, auth.token.id)))
+        .returning();
+
+      if (!data[0]) {
+        return c.json({ error: "Not found" }, 404);
+      }
+
+      return c.json({ data: { id } }, 201);
+    }
   );
 
 export default app;
