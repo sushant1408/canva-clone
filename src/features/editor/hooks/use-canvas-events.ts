@@ -29,6 +29,7 @@ const useCanvasEvents = ({
       canvas.on("object:added", () => save());
       canvas.on("object:modified", () => save());
       canvas.on("object:removed", () => save());
+      canvas.on("text:changed", () => save());
     }
 
     return () => {
@@ -39,6 +40,7 @@ const useCanvasEvents = ({
         canvas.off("object:added");
         canvas.off("object:modified");
         canvas.off("object:removed");
+        canvas.off("text:changed");
       }
     };
   }, [canvas, clearSelectionCallback, save]);

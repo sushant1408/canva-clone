@@ -19,6 +19,8 @@ const LayersSidebar = ({
     onChangeActiveTool("select");
   };
 
+  const layers = editor?.canvas.getObjects();
+
   return (
     <aside
       className={cn(

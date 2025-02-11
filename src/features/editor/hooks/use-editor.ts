@@ -218,6 +218,7 @@ const buildEditor = ({
     }
 
     canvas.renderAll();
+    canvas.fire("object:modified");
   };
 
   const alignToGroupBounds = (value: AlignElementTool) => {
@@ -372,6 +373,43 @@ const buildEditor = ({
         return;
       }
     },
+    groupSelectedObjects: () => {
+      const activeObject = canvas.getActiveObject();
+
+      if (!activeObject) {
+        return;
+      }
+
+      if (
+        activeObject.type === "activeSelection" ||
+        activeObject.type === "activeselection"
+      ) {
+        const group = new fabric.Group(canvas.getActiveObjects(), {
+          canvas,
+        });
+
+        canvas.add(group);
+        canvas.setActiveObject(group);
+        canvas.renderAll();
+      }
+    },
+    ungroupSelectedObjects: () => {
+      const group = canvas.getActiveObject();
+
+      if (!group) {
+        return;
+      }
+
+      if (group.type === "group") {
+        const sel = new fabric.ActiveSelection(group._objects, {
+          canvas,
+        });
+
+        canvas.remove(group);
+        canvas.setActiveObject(sel);
+        canvas.renderAll();
+      }
+    },
 
     // modify elements
     changeFillColor: (value) => {
@@ -380,6 +418,7 @@ const buildEditor = ({
         object.set({ fill: value });
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeStrokeColor: (value) => {
       setStrokeColor(value);
@@ -393,6 +432,7 @@ const buildEditor = ({
         object.set({ stroke: value });
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeStrokeWidth: (value) => {
       setStrokeWidth(value);
@@ -401,6 +441,7 @@ const buildEditor = ({
         object.setCoords();
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeStrokeDashArray: (value) => {
       setStrokeDashArray(value);
@@ -408,6 +449,7 @@ const buildEditor = ({
         object.set({ strokeDashArray: value });
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeOpacity: (value) => {
       setOpacity(value);
@@ -415,6 +457,7 @@ const buildEditor = ({
         object.set({ opacity: value });
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeBorderRadius: (value) => {
       setBorderRadius(value);
@@ -426,6 +469,7 @@ const buildEditor = ({
         object.set({ rx: value, ry: value });
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeFontFamily: (value) => {
       setFontFamily(value);
@@ -443,6 +487,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas.fire("text:changed");
     },
     changeFontStyle: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -459,6 +504,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas.fire("text:changed");
     },
     changeFontStrikeThrough: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -499,6 +545,7 @@ const buildEditor = ({
           canvas.renderAll();
         }
       });
+      canvas.fire("object:modified");
     },
     changeBrushColor: (value) => {
       setBrushColor(value);
@@ -518,6 +565,27 @@ const buildEditor = ({
       });
       canvas.discardActiveObject();
       canvas.renderAll();
+      canvas.fire("object:modified");
+    },
+    changeFlipHorizontally: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isImageType(object.type)) {
+          const imageObject = object as fabric.FabricImage;
+          imageObject.set({ flipY: !imageObject.flipY });
+        }
+      });
+      canvas.renderAll();
+      canvas.fire("object:modified");
+    },
+    changeFlipVertically: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isImageType(object.type)) {
+          const imageObject = object as fabric.FabricImage;
+          imageObject.set({ flipX: !imageObject.flipX });
+        }
+      });
+      canvas.renderAll();
+      canvas.fire("object:modified");
     },
 
     // add elements

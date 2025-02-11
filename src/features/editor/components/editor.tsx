@@ -27,9 +27,7 @@ import { ResponseType } from "@/features/projects/api/use-get-project";
 import { useUpdateProject } from "@/features/projects/api/use-update-project";
 
 // TODO: add shadows sidebar for shapes, text and images
-// TODO: add drawing brush type options
 // TODO: try to fix group alignment
-// TODO: add flip option for images
 // TODO: add layers sidebar with draggable layers list
 // TODO: add gradient support for shapes, text and workspace
 // TODO: add background image support for workspace

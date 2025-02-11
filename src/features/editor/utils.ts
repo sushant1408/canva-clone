@@ -14,6 +14,14 @@ function isImageType(type: string | undefined) {
   return type === "image";
 }
 
+function isActiveSelectionType(type: string | undefined) {
+  return type === "activeSelection" || type === "activeselection";
+}
+
+function isGroupType(type: string | undefined) {
+  return type === "group";
+}
+
 function rgbaObjectToString(rgba: RGBColor | "transparent") {
   if (rgba === "transparent") {
     return "rgba(0, 0, 0, 0)";
@@ -151,6 +159,8 @@ export {
   isTextType,
   isRectType,
   isImageType,
+  isActiveSelectionType,
+  isGroupType,
   rgbaObjectToString,
   createFilter,
   downloadFile,

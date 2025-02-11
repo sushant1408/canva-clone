@@ -13,6 +13,8 @@ import {
   LockIcon,
   UnlockIcon,
   LayersIcon,
+  FlipHorizontal2Icon,
+  FlipVertical2Icon,
 } from "lucide-react";
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { TbColorFilter } from "react-icons/tb";
@@ -22,9 +24,20 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { ActiveTool, Editor, TextAlignment } from "../types";
-import { isImageType, isTextType } from "../utils";
+import {
+  isActiveSelectionType,
+  isGroupType,
+  isImageType,
+  isTextType,
+} from "../utils";
 import { FONT_SIZE, FONT_WEIGHT, TEXT_ALIGNMENT_OPTIONS } from "../constants";
 import { FontSizeInput } from "./font-size-input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const TextAlignmentIconMap: Record<TextAlignment, LucideIcon> = {
   center: AlignCenterIcon,
@@ -41,6 +54,7 @@ interface ToolbarProps {
 
 const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
   const workspace = editor?.getWorkspace();
+  const canvas = editor?.canvas;
 
   const initialFillColor = editor?.getActiveFillColor();
   const initialStrokeColor = editor?.getActiveStrokeColor();
@@ -82,6 +96,10 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
 
   const isTextObjectSelected = isTextType(selectedObjectType);
   const isImageObjecSelected = isImageType(selectedObjectType);
+  const isActiveSelectionSelected = isActiveSelectionType(
+    canvas?.getActiveObject()?.type
+  );
+  const isGroupSelected = isGroupType(canvas?.getActiveObject()?.type);
 
   const toggleBold = () => {
     if (!selectedObject) {
@@ -185,6 +203,22 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     }));
   };
 
+  const toggleFlipVertically = () => {
+    if (!selectedObject) {
+      return;
+    }
+
+    editor.changeFlipVertically();
+  };
+
+  const toggleFlipHorizontally = () => {
+    if (!selectedObject) {
+      return;
+    }
+
+    editor.changeFlipHorizontally();
+  };
+
   if (editor?.selectedObjects.length === 0) {
     return (
       <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2">
@@ -221,6 +255,81 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
     );
   }
 
+  if (isActiveSelectionSelected || isGroupSelected) {
+    return (
+      <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2">
+        {isActiveSelectionSelected && (
+          <div className="flex items-center h-full justify-center">
+            <Button
+              onClick={() => editor?.groupSelectedObjects()}
+              variant="ghost"
+            >
+              Group
+            </Button>
+          </div>
+        )}
+        {isGroupSelected && (
+          <div className="flex items-center h-full justify-center">
+            <Button
+              onClick={() => editor?.ungroupSelectedObjects()}
+              variant="ghost"
+            >
+              Ungroup
+            </Button>
+          </div>
+        )}
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Duplicate" side="bottom" sideOffset={5}>
+            <Button
+              onClick={async () => {
+                await editor?.onCopy();
+                editor?.onPaste();
+              }}
+              size="icon"
+              variant="ghost"
+            >
+              <CopyIcon className="size-4" />
+            </Button>
+          </TooltipWrapper>
+        </div>
+        <Separator orientation="vertical" />
+        {isGroupSelected && (
+          <div className="flex items-center h-full justify-center">
+            <Button
+              onClick={() => onChangeActiveTool("position")}
+              variant="ghost"
+              className={cn(activeTool === "position" && "bg-gray-100")}
+            >
+              Position
+            </Button>
+          </div>
+        )}
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Layers" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("layers")}
+              size="icon"
+              variant="ghost"
+            >
+              <LayersIcon className="size-4" />
+            </Button>
+          </TooltipWrapper>
+        </div>
+        <div className="flex items-center h-full justify-center">
+          <TooltipWrapper label="Delete" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => editor?.delete()}
+              size="icon"
+              variant="ghost"
+            >
+              <TrashIcon className="size-4" />
+            </Button>
+          </TooltipWrapper>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2">
       {isImageObjecSelected && (
@@ -234,6 +343,23 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
               <TbColorFilter className="size-4 mr-2" />
               Filters
             </Button>
+          </div>
+          <div className="flex items-center h-full justify-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost">Flip</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={toggleFlipVertically}>
+                  <FlipHorizontal2Icon className="size-4 mr-2" />
+                  Flip horizontal
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={toggleFlipHorizontally}>
+                  <FlipVertical2Icon className="size-4 mr-2" />
+                  Flip vertical
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <Separator orientation="vertical" />
         </>

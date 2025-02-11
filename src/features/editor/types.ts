@@ -103,6 +103,10 @@ export interface Editor {
   changeBrushColor: (value: string) => void;
   changeBrushWidth: (value: number) => void;
   changeSelectable: (value: boolean) => void;
+  changeFlipHorizontally: () => void;
+  changeFlipVertically: () => void;
+  groupSelectedObjects: () => void;
+  ungroupSelectedObjects: () => void;
   addImage: (value: string) => void;
   addText: (value: string, options?: Partial<fabric.ITextProps>) => void;
   addCircle: () => void;
