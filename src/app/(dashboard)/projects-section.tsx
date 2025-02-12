@@ -50,8 +50,14 @@ const ProjectsSection = () => {
     "grid"
   );
 
-  const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
-    useGetProjects();
+  const {
+    data,
+    isPending,
+    isError,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useGetProjects();
   const { mutate: duplicateMutate, isPending: isDuplicating } =
     useDuplicateProject();
   const { mutate: deleteMutate, isPending: isDeleting } = useDeleteProject();
@@ -105,7 +111,7 @@ const ProjectsSection = () => {
     }
   };
 
-  if (status === "pending") {
+  if (isPending) {
     return (
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Recent projects</h3>
@@ -116,7 +122,7 @@ const ProjectsSection = () => {
     );
   }
 
-  if (status === "error") {
+  if (isError) {
     return (
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Recent projects</h3>
@@ -174,8 +180,14 @@ const ProjectsSection = () => {
                 >
                   <div className="h-full w-full rounded-md bg-muted aspect-square px-8 pt-4 relative group hover:opacity-75 overflow-hidden">
                     {project.thumbnailUrl ? (
-                      // <Image alt={project.name} src={project.thumbnailUrl} />
-                      <></>
+                      <div className="h-full overflow-hidden">
+                        <Image
+                          alt={project.name}
+                          src={project.thumbnailUrl}
+                          className="object-cover !relative"
+                          fill
+                        />
+                      </div>
                     ) : (
                       <div className="bg-white h-full w-full" />
                     )}
@@ -197,7 +209,7 @@ const ProjectsSection = () => {
                           }}
                           size="icon"
                           variant="secondary"
-                          className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 z-[10]"
+                          className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition z-[10]"
                         >
                           <MoreHorizontalIcon className="size-4" />
                         </Button>

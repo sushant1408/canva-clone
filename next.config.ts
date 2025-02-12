@@ -7,7 +7,19 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "lncrml5um3.ufs.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "replicate.delivery"
+      },
     ],
   }
 };

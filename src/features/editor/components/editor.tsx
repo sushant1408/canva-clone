@@ -7,6 +7,7 @@ import debounce from "lodash.debounce";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import { Navbar } from "@/features/editor/components/navbar";
 import { Sidebar } from "@/features/editor/components/sidebar";
+import { TemplatesSidebar } from "@/features/editor/components/templates-sidebar";
 import { ShapesSidebar } from "@/features/editor/components/shapes-sidebar";
 import { Toolbar } from "@/features/editor/components/toolbar";
 import { Footer } from "@/features/editor/components/footer";
@@ -111,6 +112,11 @@ const Editor = ({ initialData }: EditorProps) => {
         <Sidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
+        />
+        <TemplatesSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
         />
         <ShapesSidebar
           activeTool={activeTool}
