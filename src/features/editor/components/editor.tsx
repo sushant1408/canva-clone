@@ -27,7 +27,6 @@ import { ResponseType } from "@/features/projects/api/use-get-project";
 import { useUpdateProject } from "@/features/projects/api/use-update-project";
 
 // TODO: add shadows sidebar for shapes, text and images
-// TODO: add layers sidebar layers list
 // TODO: add rename project in editor navbar
 
 interface EditorProps {
