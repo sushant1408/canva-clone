@@ -479,6 +479,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas?.fire("object:modified");
     },
     changeFontWeight: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -487,7 +488,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
-      canvas.fire("text:changed");
+      canvas.fire("object:modified");
     },
     changeFontStyle: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -496,6 +497,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeFontUnderline: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -504,7 +506,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
-      canvas.fire("text:changed");
+      canvas.fire("object:modified");
     },
     changeFontStrikeThrough: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -513,6 +515,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeTextAlignment: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -521,6 +524,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas.fire("object:modified");
     },
     changeFontSize: (value) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -529,6 +533,7 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+      canvas?.fire("object:modified");
     },
     changeImageFilter: (value) => {
       canvas.getActiveObjects().forEach((object) => {

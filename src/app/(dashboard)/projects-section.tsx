@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangleIcon,
@@ -44,6 +44,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 const ProjectsSection = () => {
   const router = useRouter();
 
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [viewMethod, setViewMethod] = useLocalStorage<"list" | "grid">(
     "projects-view-method",
     "grid"
@@ -65,6 +66,7 @@ const ProjectsSection = () => {
   };
 
   const onCopy = (id: string) => {
+    setSelectedId(id);
     duplicateMutate(
       { id },
       {
@@ -74,6 +76,9 @@ const ProjectsSection = () => {
         onError: () => {
           toast.error("Failed duplicate the project");
         },
+        onSettled: () => {
+          setSelectedId(null);
+        },
       }
     );
   };
@@ -82,6 +87,7 @@ const ProjectsSection = () => {
     const ok = await confirm();
 
     if (ok) {
+      setSelectedId(id);
       deleteMutate(
         { id },
         {
@@ -90,6 +96,9 @@ const ProjectsSection = () => {
           },
           onError: () => {
             toast.error("Failed delete the project");
+          },
+          onSettled: () => {
+            setSelectedId(null);
           },
         }
       );
@@ -173,7 +182,8 @@ const ProjectsSection = () => {
 
                     <div className="absolute inset-0 top-0 left-0 opacity-0 group-hover:opacity-100 bg-black/15 z-[4]" />
 
-                    {isDuplicating || isDeleting ? (
+                    {selectedId === project.id &&
+                    (isDuplicating || isDeleting) ? (
                       <div className="absolute inset-0 top-0 left-0 bg-black/15 z-[4] flex items-center justify-center">
                         <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
                       </div>

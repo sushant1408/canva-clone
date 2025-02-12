@@ -27,14 +27,8 @@ import { ResponseType } from "@/features/projects/api/use-get-project";
 import { useUpdateProject } from "@/features/projects/api/use-update-project";
 
 // TODO: add shadows sidebar for shapes, text and images
-// TODO: try to fix group alignment
-// TODO: add layers sidebar with draggable layers list
-// TODO: add gradient support for shapes, text and workspace
-// TODO: add background image support for workspace
-// TODO: try to fix image filter bug
+// TODO: add layers sidebar layers list
 // TODO: add rename project in editor navbar
-// TODO: fix loader on every project when cloning/deleting
-// TODO: add group/ungroup functionality
 
 interface EditorProps {
   initialData: ResponseType["data"];

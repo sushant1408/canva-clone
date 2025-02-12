@@ -96,6 +96,7 @@ const useHotkeys = ({
         }
       });
       canvas?.renderAll();
+      canvas?.fire("object:modified");
     }
 
     if (isCtrlKey && event.key === "i") {
@@ -110,6 +111,7 @@ const useHotkeys = ({
         }
       });
       canvas?.renderAll();
+      canvas?.fire("object:modified");
     }
 
     if (isCtrlKey && event.key === "u") {
@@ -124,6 +126,7 @@ const useHotkeys = ({
         }
       });
       canvas?.renderAll();
+      canvas?.fire("object:modified");
     }
   });
 };
