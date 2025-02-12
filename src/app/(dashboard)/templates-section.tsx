@@ -1,23 +1,31 @@
 "use client";
 
+import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
+import { Fragment } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import {
   ResponseType,
   useGetTemplates,
 } from "@/features/projects/api/use-get-templates";
-import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
-import { Fragment } from "react";
 import { TemplateCard } from "./template-card";
-import { useRouter } from "next/navigation";
 import { useCreateProject } from "@/features/projects/api/use-create-project";
-import { toast } from "sonner";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 
 const TemplatesSection = () => {
   const router = useRouter();
 
+  const paywall = usePaywall();
   const { data, isPending, isError } = useGetTemplates();
   const { mutate, isPending: isCreating } = useCreateProject();
 
   const onCreateProject = (template: ResponseType["data"][0]) => {
+    if (template.isPro && paywall.shouldBlock) {
+      paywall.triggerPaywall();
+      return;
+    }
+
     mutate(
       {
         name: `${template.name} project`,

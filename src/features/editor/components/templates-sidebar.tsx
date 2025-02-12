@@ -1,4 +1,9 @@
-import { AlertTriangleIcon, LoaderIcon, SearchIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  CrownIcon,
+  LoaderIcon,
+  SearchIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { Fragment } from "react";
 
@@ -7,8 +12,12 @@ import { ActiveTool, Editor } from "@/features/editor/types";
 import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ResponseType, useGetTemplates } from "@/features/projects/api/use-get-templates";
+import {
+  ResponseType,
+  useGetTemplates,
+} from "@/features/projects/api/use-get-templates";
 import { useConfirm } from "@/hooks/use-confirm";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 
 interface TemplatesSidebarProps {
   activeTool: ActiveTool;
@@ -21,6 +30,7 @@ const TemplatesSidebar = ({
   editor,
   onChangeActiveTool,
 }: TemplatesSidebarProps) => {
+  const paywall = usePaywall();
   const { data, isLoading, isError } = useGetTemplates();
   const [ConfirmationDialog, confirm] = useConfirm({
     title: "Are you sure?",
@@ -32,12 +42,81 @@ const TemplatesSidebar = ({
   };
 
   const onClick = async (template: ResponseType["data"][0]) => {
+    if (template.isPro && paywall.shouldBlock) {
+      paywall.triggerPaywall();
+      return;
+    }
+
     const ok = await confirm();
 
     if (ok) {
       editor?.loadFromJson(template.json);
     }
   };
+
+  if (isLoading) {
+    return (
+      <aside
+        className={cn(
+          "bg-white relative border-r z-[40] w-[360px] h-full flex flex-col",
+          activeTool === "templates" ? "visible" : "hidden"
+        )}
+      >
+        <ToolSidebarHeader
+          title="Templates"
+          description="Choose from a variety of templates to get started"
+        />
+        <div className="flex items-center justify-center flex-1">
+          <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
+        </div>
+        <ToolSidebarClose onClick={onClose} />
+      </aside>
+    );
+  }
+
+  if (isError) {
+    return (
+      <aside
+        className={cn(
+          "bg-white relative border-r z-[40] w-[360px] h-full flex flex-col",
+          activeTool === "templates" ? "visible" : "hidden"
+        )}
+      >
+        <ToolSidebarHeader
+          title="Templates"
+          description="Choose from a variety of templates to get started"
+        />
+        <div className="flex items-center justify-center flex-1 flex-col gap-y-4">
+          <AlertTriangleIcon className="size-4 text-muted-foreground" />
+          <p className="text-muted-foreground text-xs">
+            Failed to fetch templates
+          </p>
+        </div>
+        <ToolSidebarClose onClick={onClose} />
+      </aside>
+    );
+  }
+
+  if (!data?.pages.length || !data?.pages[0].data.length) {
+    return (
+      <aside
+        className={cn(
+          "bg-white relative border-r z-[40] w-[360px] h-full flex flex-col",
+          activeTool === "templates" ? "visible" : "hidden"
+        )}
+      >
+        <ToolSidebarHeader
+          title="Templates"
+          description="Choose from a variety of templates to get started"
+        />
+        <div className="flex items-center justify-center flex-1 flex-col gap-y-4">
+          <SearchIcon className="size-4 text-muted-foreground" />
+          <p className="text-muted-foreground text-xs">No templates found</p>
+        </div>
+        <ToolSidebarClose onClick={onClose} />
+      </aside>
+    );
+  }
 
   return (
     <aside
@@ -51,29 +130,10 @@ const TemplatesSidebar = ({
         title="Templates"
         description="Choose from a variety of templates to get started"
       />
-      {isLoading && (
-        <div className="flex items-center justify-center flex-1">
-          <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
-        </div>
-      )}
-      {isError && (
-        <div className="flex items-center justify-center flex-1 flex-col gap-y-4">
-          <AlertTriangleIcon className="size-4 text-muted-foreground" />
-          <p className="text-muted-foreground text-xs">
-            Failed to fetch templates
-          </p>
-        </div>
-      )}
-      {!data?.pages.length || !data.pages[0].data.length ? (
-        <div className="flex items-center justify-center flex-1 flex-col gap-y-4">
-          <SearchIcon className="size-4 text-muted-foreground" />
-          <p className="text-muted-foreground text-xs">No templates found</p>
-        </div>
-      ) : null}
       <ScrollArea>
         <div className="p-4">
           <div className="grid grid-cols-2 gap-4">
-            {data!.pages.map((group, i) => (
+            {data.pages.map((group, i) => (
               <Fragment key={i}>
                 {group.data.map((template) => (
                   <button
@@ -84,6 +144,11 @@ const TemplatesSidebar = ({
                     }}
                     onClick={() => onClick(template)}
                   >
+                    {template.isPro && (
+                      <div className="absolute top-2 right-2 h-7 w-7 flex items-center justify-center bg-black/50 rounded-full z-[10]">
+                        <CrownIcon className="!size-4 text-yellow-500 fill-yellow-500" />
+                      </div>
+                    )}
                     <Image
                       fill
                       src={template.thumbnailUrl || ""}

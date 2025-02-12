@@ -15,6 +15,7 @@ import {
   LayersIcon,
   FlipHorizontal2Icon,
   FlipVertical2Icon,
+  SquareSplitHorizontalIcon,
 } from "lucide-react";
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { TbColorFilter } from "react-icons/tb";
@@ -343,6 +344,22 @@ const Toolbar = ({ activeTool, editor, onChangeActiveTool }: ToolbarProps) => {
               <TbColorFilter className="size-4 mr-2" />
               Filters
             </Button>
+          </div>
+          <div className="flex items-center h-full justify-center">
+            <TooltipWrapper
+              label="Remove Background"
+              side="bottom"
+              sideOffset={5}
+            >
+              <Button
+                size="icon"
+                onClick={() => onChangeActiveTool("remove-bg")}
+                variant="ghost"
+                className={cn(activeTool === "remove-bg" && "bg-gray-100")}
+              >
+                <SquareSplitHorizontalIcon className="size-4 mr-2" />
+              </Button>
+            </TooltipWrapper>
           </div>
           <div className="flex items-center h-full justify-center">
             <DropdownMenu>

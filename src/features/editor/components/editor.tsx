@@ -21,6 +21,8 @@ import { FontSidebar } from "@/features/editor/components/font-sidebar";
 import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
 import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
+import { AiSidebar } from "@/features/editor/components/ai-sidebar";
+import { RemoveBgSidebar } from "@/features/editor/components/remove-bg-sidebar";
 import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
 import { LayersSidebar } from "@/features/editor/components/layers-sidebar";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
@@ -169,6 +171,16 @@ const Editor = ({ initialData }: EditorProps) => {
           editor={editor}
         />
         <DrawSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <AiSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <RemoveBgSidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
