@@ -9,7 +9,7 @@ import subscriptions from "./subscriptions";
 import ai from "./ai";
 import authConfig from "@/auth.config";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const app = new Hono().basePath("/api");
 
