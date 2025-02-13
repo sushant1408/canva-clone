@@ -34,8 +34,7 @@ const useLoadState = ({
         initialized.current = true;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas, autoZoom]);
+  }, [canvas, autoZoom, initialState, canvasHistory, setHistoryIndex]);
 };
 
 export { useLoadState };

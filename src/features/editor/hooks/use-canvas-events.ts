@@ -43,8 +43,7 @@ const useCanvasEvents = ({
         canvas.off("text:changed");
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas, clearSelectionCallback, save]);
+  }, [canvas, clearSelectionCallback, save, setSelectedObjects]);
 };
 
 export { useCanvasEvents };

@@ -39,13 +39,13 @@ interface EditorProps {
 const Editor = ({ initialData }: EditorProps) => {
   const { mutate } = useUpdateProject(initialData.id);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSave = useCallback(
     debounce(
       (values: { json: string; height: number; width: number }) =>
         mutate(values),
       1000
     ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [mutate]
   );
 

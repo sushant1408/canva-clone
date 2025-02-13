@@ -1028,8 +1028,7 @@ const useEditor = ({
       canvasHistory.current = [currentState];
       setHistoryIndex(0);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [canvasHistory, setHistoryIndex]
   );
 
   return { init, editor };
