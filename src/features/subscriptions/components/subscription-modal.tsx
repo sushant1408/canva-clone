@@ -12,11 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { useSubscriptionModal } from "../store/use-subscription-modal";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2Icon } from "lucide-react";
+import { CheckCircle2Icon, LoaderIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCheckout } from "../api/use-checkout";
 
 const SubscriptionModal = () => {
   const { isOpen, onClose } = useSubscriptionModal();
+  const { mutate, isPending } = useCheckout();
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -56,7 +58,17 @@ const SubscriptionModal = () => {
           </li>
         </ul>
         <DialogFooter className="pt-2 mt-4 gap-y-2">
-          <Button className="w-full">Upgrade</Button>
+          <Button
+            className="w-full"
+            disabled={isPending}
+            onClick={() => mutate()}
+          >
+            {isPending ? (
+              <LoaderIcon className="animate-spin text-muted-foreground size-4" />
+            ) : (
+              "Upgrade"
+            )}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

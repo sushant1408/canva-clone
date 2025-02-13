@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, isNull, or } from "drizzle-orm";
 
 import { db } from "@/db/drizzle";
 import { projects, projectsInsertSchema } from "@/db/schema";
@@ -56,7 +56,12 @@ const app = new Hono()
       const data = await db
         .select()
         .from(projects)
-        .where(eq(projects.userId, auth.token.id))
+        .where(
+          and(
+            eq(projects.userId, auth.token.id),
+            or(eq(projects.isTemplate, false), isNull(projects.isTemplate))
+          )
+        )
         .limit(limit)
         .offset((page - 1) * limit)
         .orderBy(desc(projects.updatedAt));

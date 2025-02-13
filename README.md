@@ -2,32 +2,54 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3008](http://localhost:3008) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Inter](https://vercel.com/font).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Run the drizzle studio:
 
-## Learn More
+```bash
+npm run db:studio
+```
 
-To learn more about Next.js, take a look at the following resources:
+If required before starting drizzle studio, run the following commands:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run db:generate
+npm run db:migrate
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Stripe CLI & Webhooks:
+
+If Stripe CLI is not installed, run the command:
+
+```bash
+brew install stripe/stripe-cli/stripe
+```
+
+Login to Stripe CLI:
+
+```bash
+stripe login
+```
+
+Get the webhook signing secret, run the command:
+
+```bash
+stripe listen --forward-to localhost:3008/api/subscriptions/webhook
+```
+
+Trigger events with CLI:
+
+```bash
+stripe trigger <event>
+```
 
 ## Deploy on Vercel
 

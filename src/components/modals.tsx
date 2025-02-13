@@ -1,7 +1,10 @@
 "use client";
 
-import { SubscriptionModal } from "@/features/subscriptions/components/subscription-modal";
 import { useEffect, useState } from "react";
+
+import { SubscriptionFailedModal } from "@/features/subscriptions/components/subscription-failed-modal";
+import { SubscriptionModal } from "@/features/subscriptions/components/subscription-modal";
+import { SubscriptionSuccessModal } from "@/features/subscriptions/components/subscription-success-modal";
 
 const Modals = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -16,6 +19,8 @@ const Modals = () => {
 
   return (
     <>
+      <SubscriptionFailedModal />
+      <SubscriptionSuccessModal />
       <SubscriptionModal />
     </>
   );
