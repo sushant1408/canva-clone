@@ -24,7 +24,7 @@ const useConfirm = ({
   } | null>(null);
 
   const confirm = () => {
-    return new Promise<boolean>((resolve, _reject) => {
+    return new Promise<boolean>((resolve, reject) => {
       setPromise({ resolve });
     });
   };

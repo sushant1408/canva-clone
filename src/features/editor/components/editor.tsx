@@ -45,6 +45,7 @@ const Editor = ({ initialData }: EditorProps) => {
         mutate(values),
       1000
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [mutate]
   );
 

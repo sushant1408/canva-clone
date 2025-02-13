@@ -62,7 +62,7 @@ export type BuildEditorProps = {
   setBrushColor: (value: string) => void;
   setBrushWidth: (value: number) => void;
   selectedObjects: fabric.FabricObject[];
-  copy: () => Promise<{ activeObj: any; clonedObj: any }>;
+  copy: () => Promise<{ activeObj: unknown; clonedObj: unknown }>;
   cut: () => void;
   paste: () => void;
   canUndo: () => boolean;
@@ -77,7 +77,7 @@ export interface Editor {
   selectedObjects: fabric.FabricObject[];
   enableDrawingMode: () => void;
   disableDrawingMode: () => void;
-  onCopy: () => Promise<{ activeObj: any; clonedObj: any }>;
+  onCopy: () => Promise<{ activeObj: unknown; clonedObj: unknown }>;
   onCut: () => void;
   onPaste: () => void;
   delete: () => void;
