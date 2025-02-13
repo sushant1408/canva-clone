@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import { compareSync } from "bcrypt-edge";
 import { eq } from "drizzle-orm";
 import type { NextAuthConfig } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -59,7 +59,7 @@ export default {
           return null;
         }
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const passwordMatch = compareSync(password, user.password);
 
         if (!passwordMatch) {
           return null;

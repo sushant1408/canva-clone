@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import { hashSync } from "bcrypt-edge";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db/drizzle";
@@ -20,7 +20,7 @@ const app = new Hono().post(
   async (c) => {
     const { email, name, password } = c.req.valid("json");
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = hashSync(password, 12);
 
     const query = await db.select().from(users).where(eq(users.email, email));
 
