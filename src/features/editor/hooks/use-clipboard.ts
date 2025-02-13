@@ -10,7 +10,7 @@ const useClipboard = ({ canvas }: UseClipboardProps) => {
 
   const copy = useCallback(() => {
     return new Promise<{ activeObj: any; clonedObj: any }>(
-      (resolve, reject) => {
+      (resolve, _reject) => {
         const activeObj = canvas?.getActiveObject();
 
         activeObj?.clone()?.then((clonedObj) => {

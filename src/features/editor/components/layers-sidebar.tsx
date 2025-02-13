@@ -66,7 +66,6 @@ const LayersSidebar = ({
             const circleLayer = layer?.type === "circle";
             const triangleLayer = layer?.type === "triangle";
             const rectLayer = layer?.type === "rect";
-            const polygonLayer = layer?.type === "polygon";
 
             return (
               <Button

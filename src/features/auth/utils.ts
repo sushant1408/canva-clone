@@ -9,6 +9,4 @@ async function protectServer() {
   }
 };
 
-function saltAndHashPassword(password: string) {}; 
-
-export { protectServer, saltAndHashPassword };
+export { protectServer };

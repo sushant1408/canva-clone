@@ -34,10 +34,6 @@ const PositionSidebar = ({
     onChangeActiveTool("select");
   };
 
-  const onChange = (value: string) => {
-    editor?.changeFillColor(value);
-  };
-
   return (
     <aside
       className={cn(

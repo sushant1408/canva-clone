@@ -16,7 +16,7 @@ const app = new Hono().basePath("/api");
 // to protect the routes
 app.use(
   "*",
-  initAuthConfig((c) => {
+  initAuthConfig((_c) => {
     return {
       secret: process.env.AUTH_SECRET,
       ...(authConfig as any),

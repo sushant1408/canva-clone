@@ -1,4 +1,3 @@
-import { FormEvent } from "react";
 import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
 import * as fabric from "fabric";
 import Image from "next/image";

@@ -125,7 +125,7 @@ const SignInCard = () => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground text-center">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/sign-up">
             <span className="text-sky-700 hover:underline">Sign up</span>
           </Link>

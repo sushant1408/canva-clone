@@ -20,7 +20,7 @@ const SidebarRoutes = () => {
   const pathname = usePathname();
   const paywall = usePaywall();
   const { mutate: checkoutMutate, isPending: isCheckoutPending } = useCheckout();
-  const { mutate: billingMutate, isPending: isBillingPending } = useBilling();
+  const { mutate: billingMutate } = useBilling();
 
   const onClick = () => {
     if (paywall.shouldBlock) {

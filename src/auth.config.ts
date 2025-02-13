@@ -6,6 +6,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import type { NextAuthConfig } from "next-auth";
+// @ts-ignore
 import { JWT } from "next-auth/jwt";
 
 import { db } from "./db/drizzle";
