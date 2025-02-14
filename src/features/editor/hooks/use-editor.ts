@@ -131,7 +131,7 @@ const buildEditor = ({
   };
 
   const getWorkspace = () => {
-    // @ts-ignore
+    // @ts-expect-error
     return canvas.getObjects().find((object) => object.name === "workspace");
   };
 
@@ -377,7 +377,7 @@ const buildEditor = ({
       }
 
       if (group.type === "group") {
-        // @ts-ignore
+        // @ts-expect-error
         const sel = new fabric.ActiveSelection(group._objects, {
           canvas,
         });

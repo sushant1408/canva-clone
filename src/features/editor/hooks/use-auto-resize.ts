@@ -25,7 +25,7 @@ const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     const zoomRatio = 0.85;
     const localWorkspace = canvas
       .getObjects()
-      // @ts-ignore
+      // @ts-expect-error
       .find((object) => object.name === "workspace");
 
     if (!localWorkspace) {
@@ -39,7 +39,7 @@ const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
 
     const zoom = scale * zoomRatio;
 
-    // @ts-ignore
+    // @ts-expect-error
     canvas.setViewportTransform(fabric.iMatrix.concat());
     canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoom);
 
