@@ -27,7 +27,7 @@ const LayersSidebar = ({
 
   const layers = editor?.canvas
     .getObjects()
-    // @ts-expect-error
+    // @ts-expect-error object.name exists as custom key
     ?.filter((object) => object?.name !== "workspace");
   const activeObject = editor?.canvas.getActiveObject();
 

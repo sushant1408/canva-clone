@@ -131,7 +131,7 @@ const buildEditor = ({
   };
 
   const getWorkspace = () => {
-    // @ts-expect-error
+    // @ts-expect-error object.name exists as custom key
     return canvas.getObjects().find((object) => object.name === "workspace");
   };
 
@@ -377,7 +377,7 @@ const buildEditor = ({
       }
 
       if (group.type === "group") {
-        // @ts-expect-error
+        // @ts-expect-error group._objects exists
         const sel = new fabric.ActiveSelection(group._objects, {
           canvas,
         });

@@ -25,7 +25,7 @@ const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     const zoomRatio = 0.85;
     const localWorkspace = canvas
       .getObjects()
-      // @ts-expect-error
+      // @ts-expect-error object.name exists as custom key
       .find((object) => object.name === "workspace");
 
     if (!localWorkspace) {
@@ -39,7 +39,7 @@ const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
 
     const zoom = scale * zoomRatio;
 
-    // @ts-expect-error
+    // @ts-expect-error fabric.iMatrix.concat() is of type TMat2D
     canvas.setViewportTransform(fabric.iMatrix.concat());
     canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoom);
 
