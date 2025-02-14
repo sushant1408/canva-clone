@@ -23,7 +23,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const output = await replicate.run(
+      const output: unknown = await replicate.run(
         "cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003",
         {
           input: {
@@ -32,9 +32,9 @@ const app = new Hono()
         }
       );
 
-      const res = output as Array<string>;
+      const res = output as string;
 
-      return c.json({ data: res });
+      return c.json({ data: res }, 200);
     }
   )
   .post(
@@ -72,7 +72,7 @@ const app = new Hono()
 
       const res = output as Array<string>;
 
-      return c.json({ data: res[0] });
+      return c.json({ data: res[0] }, 200);
     }
   );
 
