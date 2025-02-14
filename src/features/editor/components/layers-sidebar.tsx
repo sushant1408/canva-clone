@@ -102,7 +102,8 @@ const LayersSidebar = ({
 
                 {imageLayer && (
                   <Image
-                    src={(layer as fabric.FabricImage).getSrc()}
+                    // @ts-expect-error layer._originalElement.currentSrc exists
+                    src={layer?._originalElement?.currentSrc}
                     height={36}
                     width={36}
                     alt="Image"

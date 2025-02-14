@@ -26,7 +26,8 @@ const RemoveBgSidebar = ({
   const { mutate, isPending } = useRemoveBackground();
 
   const selectedObject = editor?.selectedObjects[0] as fabric.FabricImage;
-  const imageSrc = selectedObject?.getSrc();
+  // @ts-expect-error selecyedObject._originalElement.currentSrc exists
+  const imageSrc = selectedObject?._originalElement?.currentSrc;
 
   const onClose = () => {
     onChangeActiveTool("select");
