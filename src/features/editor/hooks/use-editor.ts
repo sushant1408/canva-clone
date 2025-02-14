@@ -131,6 +131,7 @@ const buildEditor = ({
   };
 
   const getWorkspace = () => {
+    // @ts-ignore
     return canvas.getObjects().find((object) => object.name === "workspace");
   };
 
@@ -221,32 +222,7 @@ const buildEditor = ({
     canvas.fire("object:modified");
   };
 
-  const alignToGroupBounds = (value: AlignElementTool) => {
-    const selection = canvas.getActiveObject();
-
-    // Get the bounding box of the selection
-    const groupBounds = selection.getBoundingRect();
-    console.log({ selection, groupBounds });
-
-    switch (value) {
-      case "bottom":
-        break;
-      case "center":
-        break;
-      case "left":
-        break;
-      case "middle":
-        break;
-      case "right":
-        break;
-      case "top":
-        break;
-      default:
-        break;
-    }
-
-    canvas.renderAll();
-  };
+  const alignToGroupBounds = (value: AlignElementTool) => {};
 
   return {
     // download options
@@ -401,6 +377,7 @@ const buildEditor = ({
       }
 
       if (group.type === "group") {
+        // @ts-ignore
         const sel = new fabric.ActiveSelection(group._objects, {
           canvas,
         });

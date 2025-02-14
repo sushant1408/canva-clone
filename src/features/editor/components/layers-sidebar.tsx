@@ -27,6 +27,7 @@ const LayersSidebar = ({
 
   const layers = editor?.canvas
     .getObjects()
+    // @ts-ignore
     ?.filter((object) => object?.name !== "workspace");
   const activeObject = editor?.canvas.getActiveObject();
 

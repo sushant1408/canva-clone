@@ -41,6 +41,7 @@ const useHistory = ({ canvas, saveCallback }: UseHistoryProps) => {
 
       const workspace = canvas
         .getObjects()
+        // @ts-ignore
         .find((object) => object.name === "workspace");
       const height = workspace?.height || 0;
       const width = workspace?.width || 0;
