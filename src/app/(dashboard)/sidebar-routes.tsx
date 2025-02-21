@@ -11,10 +11,10 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SidebarItem } from "./sidebar-item";
-import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
-import { useCheckout } from "@/features/subscriptions/api/use-checkout";
 import { useBilling } from "@/features/subscriptions/api/use-billing";
+import { useCheckout } from "@/features/subscriptions/api/use-checkout";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
+import { SidebarItem } from "./sidebar-item";
 
 const SidebarRoutes = () => {
   const pathname = usePathname();

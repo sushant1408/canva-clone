@@ -1,15 +1,15 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ColorPicker } from "./color-picker";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { cn } from "@/lib/utils";
+import { ColorPicker } from "./color-picker";
 
 interface SettingsSidebarProps {
   activeTool: ActiveTool;

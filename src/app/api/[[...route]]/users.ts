@@ -1,8 +1,8 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
 import { hashSync } from "bcrypt-edge";
 import { eq } from "drizzle-orm";
+import { Hono } from "hono";
+import { z } from "zod";
 
 import { db } from "@/db/drizzle";
 import { users } from "@/db/schema";

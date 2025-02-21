@@ -1,14 +1,14 @@
-import { ChangeEvent, useState } from "react";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import { ChangeEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuCheckboxItem,
+  DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import { fontSizes } from "../constants";
 
 interface FontSizeInputProps {

@@ -1,12 +1,12 @@
 "use client";
 
-import { use } from "react";
 import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
 import Link from "next/link";
+import { use } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Editor } from "@/features/editor/components/editor";
 import { useGetProject } from "@/features/projects/api/use-get-project";
-import { Button } from "@/components/ui/button";
 
 interface ProjectIdPageProps {
   params: Promise<{ projectId: string }>;

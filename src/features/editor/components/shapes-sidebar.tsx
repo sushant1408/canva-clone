@@ -1,7 +1,6 @@
+import { BsHexagonFill, BsOctagonFill, BsPentagonFill } from "react-icons/bs";
 import { FaCircle, FaSquare, FaSquareFull } from "react-icons/fa";
-import { IoTriangle, IoStar } from "react-icons/io5";
 import { FaDiamond } from "react-icons/fa6";
-import { BsPentagonFill, BsHexagonFill, BsOctagonFill } from "react-icons/bs";
 import {
   ImArrowDown,
   ImArrowLeft,
@@ -9,13 +8,14 @@ import {
   ImArrowUp,
   ImPlus,
 } from "react-icons/im";
+import { IoStar, IoTriangle } from "react-icons/io5";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ShapeTool } from "@/features/editor/components/shape-tool";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { POLYGON_MATRICES } from "@/features/editor/constants";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
 
 interface ShapesSidebarProps {

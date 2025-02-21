@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { InferResponseType } from "hono";
 
 import { client } from "@/lib/hono";
-import { InferResponseType } from "hono";
 
 export type ResponseType = InferResponseType<
   (typeof client.api.projects)["templates"]["$get"],

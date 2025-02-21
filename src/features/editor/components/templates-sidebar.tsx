@@ -7,17 +7,17 @@ import {
 import Image from "next/image";
 import { Fragment } from "react";
 
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import {
   ResponseType,
   useGetTemplates,
 } from "@/features/projects/api/use-get-templates";
-import { useConfirm } from "@/hooks/use-confirm";
 import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
+import { useConfirm } from "@/hooks/use-confirm";
+import { cn } from "@/lib/utils";
 
 interface TemplatesSidebarProps {
   activeTool: ActiveTool;

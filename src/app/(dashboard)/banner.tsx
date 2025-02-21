@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useCreateProject } from "@/features/projects/api/use-create-project";
 import { ArrowRightIcon, LoaderIcon, SparklesIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { useCreateProject } from "@/features/projects/api/use-create-project";
 
 const Banner = () => {
   const router = useRouter();

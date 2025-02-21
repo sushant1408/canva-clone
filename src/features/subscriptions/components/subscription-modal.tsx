@@ -1,7 +1,9 @@
 "use client";
 
+import { CheckCircle2Icon, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useSubscriptionModal } from "../store/use-subscription-modal";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2Icon, LoaderIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useCheckout } from "../api/use-checkout";
+import { useSubscriptionModal } from "../store/use-subscription-modal";
 
 const SubscriptionModal = () => {
   const { isOpen, onClose } = useSubscriptionModal();

@@ -1,36 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
 import debounce from "lodash.debounce";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useEditor } from "@/features/editor/hooks/use-editor";
-import { Navbar } from "@/features/editor/components/navbar";
-import { Sidebar } from "@/features/editor/components/sidebar";
-import { TemplatesSidebar } from "@/features/editor/components/templates-sidebar";
-import { ShapesSidebar } from "@/features/editor/components/shapes-sidebar";
-import { Toolbar } from "@/features/editor/components/toolbar";
-import { Footer } from "@/features/editor/components/footer";
-import { FillColorSidebar } from "@/features/editor/components/fill-color-sidebar";
-import { StrokeColorSidebar } from "@/features/editor/components/stroke-color-sidebar";
-import { StrokeWidthSidebar } from "@/features/editor/components/stroke-width-sidebar";
-import { PositionSidebar } from "@/features/editor/components/position-sidebar";
-import { OpacitySidebar } from "@/features/editor/components/opacity-sidebar";
-import { TextSidebar } from "@/features/editor/components/text-sidebar";
-import { FontSidebar } from "@/features/editor/components/font-sidebar";
-import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
-import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
-import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { AiSidebar } from "@/features/editor/components/ai-sidebar";
+import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
+import { FillColorSidebar } from "@/features/editor/components/fill-color-sidebar";
+import { FontSidebar } from "@/features/editor/components/font-sidebar";
+import { Footer } from "@/features/editor/components/footer";
+import { ImageFilterSidebar } from "@/features/editor/components/image-filters-sidebar";
+import { ImagesSidebar } from "@/features/editor/components/images-sidebar";
+import { LayersSidebar } from "@/features/editor/components/layers-sidebar";
+import { Navbar } from "@/features/editor/components/navbar";
+import { OpacitySidebar } from "@/features/editor/components/opacity-sidebar";
+import { PositionSidebar } from "@/features/editor/components/position-sidebar";
 import { RemoveBgSidebar } from "@/features/editor/components/remove-bg-sidebar";
 import { SettingsSidebar } from "@/features/editor/components/settings-sidebar";
-import { LayersSidebar } from "@/features/editor/components/layers-sidebar";
+import { ShapesSidebar } from "@/features/editor/components/shapes-sidebar";
+import { Sidebar } from "@/features/editor/components/sidebar";
+import { StrokeColorSidebar } from "@/features/editor/components/stroke-color-sidebar";
+import { StrokeWidthSidebar } from "@/features/editor/components/stroke-width-sidebar";
+import { TemplatesSidebar } from "@/features/editor/components/templates-sidebar";
+import { TextSidebar } from "@/features/editor/components/text-sidebar";
+import { Toolbar } from "@/features/editor/components/toolbar";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 import { ActiveTool, selectionDependentTools } from "@/features/editor/types";
 import { ResponseType } from "@/features/projects/api/use-get-project";
 import { useUpdateProject } from "@/features/projects/api/use-update-project";
 
 // TODO: add shadows sidebar for shapes, text and images
-// TODO: add rename project in editor navbar
 
 interface EditorProps {
   initialData: ResponseType["data"];

@@ -6,7 +6,7 @@ import {
   LoaderIcon,
   LogOutIcon,
 } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,8 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 import { useBilling } from "@/features/subscriptions/api/use-billing";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 
 const UserButton = () => {
   const session = useSession();

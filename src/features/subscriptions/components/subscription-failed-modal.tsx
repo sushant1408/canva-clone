@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useSubscriptionFailedModal } from "../store/use-subscription-failed-modal";
-import { Button } from "@/components/ui/button";
 
 const SubscriptionFailedModal = () => {
   const router = useRouter();

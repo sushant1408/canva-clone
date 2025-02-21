@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Space_Grotesk } from "next/font/google";
+
 import { cn } from "@/lib/utils";
 
 const font = Space_Grotesk({

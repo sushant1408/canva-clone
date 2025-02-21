@@ -1,13 +1,4 @@
-import Image from "next/image";
 import * as fabric from "fabric";
-
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { isImageType, isTextType } from "../utils";
 import {
   AlignCenterHorizontalIcon,
   AlignCenterVerticalIcon,
@@ -29,6 +20,9 @@ import {
   TrashIcon,
   UnlockIcon,
 } from "lucide-react";
+import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,6 +35,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { cn } from "@/lib/utils";
+import { isImageType, isTextType } from "../utils";
 
 interface LayersSidebarProps {
   activeTool: ActiveTool;

@@ -1,15 +1,15 @@
-import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
 import * as fabric from "fabric";
+import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRemoveBackground } from "@/features/ai/api/use-remove-background";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
+import { cn } from "@/lib/utils";
 
 interface RemoveBgSidebarProps {
   activeTool: ActiveTool;

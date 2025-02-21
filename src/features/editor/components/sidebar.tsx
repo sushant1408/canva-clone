@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  LayoutTemplateIcon,
   ImageIcon,
+  LayoutTemplateIcon,
   PencilIcon,
   SettingsIcon,
   ShapesIcon,

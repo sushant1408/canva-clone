@@ -1,21 +1,6 @@
-import { useCallback, useMemo, useRef, useState } from "react";
 import * as fabric from "fabric";
+import { useCallback, useMemo, useRef, useState } from "react";
 
-import {
-  AlignElementTool,
-  BuildEditorProps,
-  Editor,
-} from "@/features/editor/types";
-import { useAutoResize } from "./use-auto-resize";
-import { useCanvasEvents } from "./use-canvas-events";
-import {
-  createFilter,
-  downloadFile,
-  isImageType,
-  isRectType,
-  isTextType,
-  transformText,
-} from "../utils";
 import {
   BORDER_RADIUS,
   CIRCLE_OPTIONS,
@@ -32,11 +17,26 @@ import {
   TEXT_OPTIONS,
   TRIANGLE_OPTIONS,
 } from "@/features/editor/constants";
+import {
+  AlignElementTool,
+  BuildEditorProps,
+  Editor,
+} from "@/features/editor/types";
+import {
+  createFilter,
+  downloadFile,
+  isImageType,
+  isRectType,
+  isTextType,
+  transformText,
+} from "../utils";
+import { useAutoResize } from "./use-auto-resize";
+import { useCanvasEvents } from "./use-canvas-events";
 import { useClipboard } from "./use-clipboard";
 import { useHistory } from "./use-history";
 import { useHotkeys } from "./use-hotkeys";
-import { useWindowEvent } from "./use-window-event";
 import { useLoadState } from "./use-load-state";
+import { useWindowEvent } from "./use-window-event";
 
 const buildEditor = ({
   canvas,

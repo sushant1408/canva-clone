@@ -1,5 +1,5 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 import * as fabric from "fabric";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 
 import { JSON_KEYS } from "../constants";
 

@@ -6,17 +6,20 @@ import {
   Redo2Icon,
   Undo2Icon,
 } from "lucide-react";
-import { CiFileOn } from "react-icons/ci";
+import { useEffect, useState } from "react";
 import {
   BsCloudCheck,
+  BsCloudSlash,
+  BsFiletypeJpg,
   BsFiletypeJson,
   BsFiletypePng,
-  BsFiletypeJpg,
   BsFiletypeSvg,
-  BsCloudSlash,
 } from "react-icons/bs";
+import { CiFileOn } from "react-icons/ci";
+import { toast } from "sonner";
 import { useFilePicker } from "use-file-picker";
 
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,15 +27,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Logo } from "@/features/editor/components/logo";
-import { Separator } from "@/components/ui/separator";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { cn } from "@/lib/utils";
-import { UserButton } from "@/features/auth/components/user-button";
-import { useMutationState } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import { UserButton } from "@/features/auth/components/user-button";
+import { Logo } from "@/features/editor/components/logo";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { useUpdateProject } from "@/features/projects/api/use-update-project";
+import { cn } from "@/lib/utils";
+import { useMutationState } from "@tanstack/react-query";
+import { PROJECT_NAME_MAX_LENGTH } from "../constants";
 
 interface NavbarProps {
   id: string;
@@ -59,6 +62,7 @@ const Navbar = ({
       };
     },
   });
+  const { mutate } = useUpdateProject(id);
 
   const currentStatus = data[data.length - 1]?.status;
   const isError = currentStatus === "error";
@@ -85,6 +89,36 @@ const Navbar = ({
   useEffect(() => {
     setName(project?.data?.name);
   }, [project?.data?.name]);
+
+  const handleRename = () => {
+    if (project.name === name) {
+      return;
+    }
+    
+    if (name.length === 0) {
+      toast.error("Name cannot be empty");
+      return;
+    }
+
+    if (name.length > PROJECT_NAME_MAX_LENGTH) {
+      toast.error(
+        `Name cannot exceed the limit of ${PROJECT_NAME_MAX_LENGTH} characters`
+      );
+      return;
+    }
+
+    mutate(
+      { name },
+      {
+        onSuccess: () => {
+          toast.success("Project renamed successfully");
+        },
+        onError: () => {
+          toast.error("Failed to rename the project");
+        },
+      }
+    );
+  };
 
   return (
     <nav className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
@@ -173,6 +207,12 @@ const Navbar = ({
             onChange={(e) => setName(e.target.value)}
             className="border-0 hover:border"
             disabled={isPending}
+            onBlur={handleRename}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                handleRename();
+              }
+            }}
           />
         </div>
 

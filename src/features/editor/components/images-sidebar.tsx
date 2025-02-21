@@ -2,13 +2,13 @@ import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { useGetImages } from "@/features/images/api/use-get-images";
 import { UploadButton } from "@/lib/uploadthing";
+import { cn } from "@/lib/utils";
 
 interface ImagesSidebarProps {
   activeTool: ActiveTool;

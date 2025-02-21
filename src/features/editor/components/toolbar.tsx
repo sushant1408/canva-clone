@@ -1,29 +1,36 @@
-import { useEffect, useState } from "react";
-import { BsBorderWidth } from "react-icons/bs";
-import { RxTransparencyGrid } from "react-icons/rx";
 import {
-  ChevronDownIcon,
-  AlignLeftIcon,
   AlignCenterIcon,
-  AlignRightIcon,
   AlignJustifyIcon,
-  type LucideIcon,
-  TrashIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  ChevronDownIcon,
   CopyIcon,
-  LockIcon,
-  UnlockIcon,
-  LayersIcon,
   FlipHorizontal2Icon,
   FlipVertical2Icon,
+  LayersIcon,
+  LockIcon,
+  type LucideIcon,
   SquareSplitHorizontalIcon,
+  TrashIcon,
+  UnlockIcon,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BsBorderWidth } from "react-icons/bs";
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
+import { RxTransparencyGrid } from "react-icons/rx";
 import { TbColorFilter } from "react-icons/tb";
 
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { FONT_SIZE, FONT_WEIGHT, TEXT_ALIGNMENT_OPTIONS } from "../constants";
 import { ActiveTool, Editor, TextAlignment } from "../types";
 import {
   isActiveSelectionType,
@@ -31,14 +38,7 @@ import {
   isImageType,
   isTextType,
 } from "../utils";
-import { FONT_SIZE, FONT_WEIGHT, TEXT_ALIGNMENT_OPTIONS } from "../constants";
 import { FontSizeInput } from "./font-size-input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const TextAlignmentIconMap: Record<TextAlignment, LucideIcon> = {
   center: AlignCenterIcon,

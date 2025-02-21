@@ -1,15 +1,15 @@
-import { FormEvent, useState } from "react";
 import { LoaderIcon } from "lucide-react";
+import { FormEvent, useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { useGenerateImage } from "@/features/ai/api/use-generate-image";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
+import { ActiveTool, Editor } from "@/features/editor/types";
 import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
+import { cn } from "@/lib/utils";
 
 interface AiSidebarProps {
   activeTool: ActiveTool;

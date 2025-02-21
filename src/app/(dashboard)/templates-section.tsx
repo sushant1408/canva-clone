@@ -1,17 +1,17 @@
 "use client";
 
 import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
-import { Fragment } from "react";
 import { useRouter } from "next/navigation";
+import { Fragment } from "react";
 import { toast } from "sonner";
 
+import { useCreateProject } from "@/features/projects/api/use-create-project";
 import {
   ResponseType,
   useGetTemplates,
 } from "@/features/projects/api/use-get-templates";
-import { TemplateCard } from "./template-card";
-import { useCreateProject } from "@/features/projects/api/use-create-project";
 import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
+import { TemplateCard } from "./template-card";
 
 const TemplatesSection = () => {
   const router = useRouter();

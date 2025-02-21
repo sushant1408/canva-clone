@@ -156,13 +156,13 @@ function transformText(objects: any) {
 }
 
 export {
-  isTextType,
-  isRectType,
-  isImageType,
-  isActiveSelectionType,
-  isGroupType,
-  rgbaObjectToString,
   createFilter,
   downloadFile,
+  isActiveSelectionType,
+  isGroupType,
+  isImageType,
+  isRectType,
+  isTextType,
+  rgbaObjectToString,
   transformText,
 };

@@ -1,17 +1,17 @@
+import { MinimizeIcon } from "lucide-react";
 import { useState } from "react";
 
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
-import { Editor } from "../types";
-import { Slider } from "@/components/ui/slider";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Slider } from "@/components/ui/slider";
 import { workspaceZoomLevels } from "../constants";
-import { MinimizeIcon } from "lucide-react";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Editor } from "../types";
 
 interface FooterProps {
   editor: Editor | undefined;

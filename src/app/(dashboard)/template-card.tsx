@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils";
 import { CrownIcon } from "lucide-react";
 import Image from "next/image";
+
+import { cn } from "@/lib/utils";
 
 interface TemplateCardProps {
   imageSrc: string;

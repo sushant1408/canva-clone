@@ -1,5 +1,5 @@
-import { Hono } from "hono";
 import { verifyAuth } from "@hono/auth-js";
+import { Hono } from "hono";
 
 import { unsplash } from "@/lib/unsplash";
 

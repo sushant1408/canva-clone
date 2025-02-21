@@ -1,11 +1,11 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
-import { FormEvent, useState } from "react";
-import { toast } from "sonner";
 import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { FormEvent, useState } from "react";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,9 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 import { useSignUp } from "../hooks/use-sign-up";
 
 const SignUpCard = () => {

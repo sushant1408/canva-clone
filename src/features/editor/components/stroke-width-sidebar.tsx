@@ -1,16 +1,16 @@
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Slider } from "@/components/ui/slider";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import {
   BORDER_RADIUS,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
 } from "@/features/editor/constants";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { cn } from "@/lib/utils";
 import { isRectType } from "../utils";
 
 interface StrokeWidthSidebarProps {

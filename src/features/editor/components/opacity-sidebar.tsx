@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
-import { ActiveTool, Editor } from "@/features/editor/types";
-import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
-import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Slider } from "@/components/ui/slider";
+import { ToolSidebarClose } from "@/features/editor/components/tool-sidebar-close";
+import { ToolSidebarHeader } from "@/features/editor/components/tool-sidebar-header";
 import { OPACITY } from "@/features/editor/constants";
+import { ActiveTool, Editor } from "@/features/editor/types";
+import { cn } from "@/lib/utils";
 
 interface OpacitySidebarProps {
   activeTool: ActiveTool;

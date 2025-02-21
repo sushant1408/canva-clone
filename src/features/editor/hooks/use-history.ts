@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from "react";
 import * as fabric from "fabric";
+import { useCallback, useRef, useState } from "react";
 
 import { JSON_KEYS } from "../constants";
 
