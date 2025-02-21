@@ -162,7 +162,7 @@ const ProjectCard = ({ project, variant = "card" }: ProjectCardProps) => {
                 <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center group/name mb-2 gap-x-1">
                     <Input
-                      className="text-xl text-wrap font-medium h-[25px] border-x-0 border-t-0 border-transparent hover:border-b hover:border-border hover:border-dashed w-auto p-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="text-xl text-wrap font-medium h-[25px] border-x-0 border-t-0 border-transparent hover:border-b hover:border-border hover:border-dashed w-auto p-0 focus-visible:outline-none focus-visible:ring-transparent"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       onBlur={handleRename}
@@ -257,7 +257,7 @@ const ProjectCard = ({ project, variant = "card" }: ProjectCardProps) => {
               <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center group/name mb-2 gap-x-1">
                   <Input
-                    className="text-xl text-wrap font-medium h-[25px] border-x-0 border-t-0 border-transparent hover:border-b hover:border-border hover:border-dashed w-auto p-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="text-xl text-wrap font-medium h-[25px] border-x-0 border-t-0 border-transparent hover:border-b hover:border-border hover:border-dashed w-auto p-0 focus-visible:outline-none focus-visible:ring-transparent"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onBlur={handleRename}
