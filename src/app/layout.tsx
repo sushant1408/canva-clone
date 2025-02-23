@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { AppProviders } from "@/components/app-providers";
 import { Modals } from "@/components/modals";
 import { Toaster } from "@/components/ui/sonner";
+import { siteConfig } from "@/config/site";
 import { SubscriptionAlert } from "@/features/subscriptions/components/subsctiption-alert";
 import "./globals.css";
 
