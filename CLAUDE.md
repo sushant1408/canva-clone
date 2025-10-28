@@ -2,6 +2,59 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Environment Setup
+
+### Prerequisites
+
+Before running the project, you need to set up accounts and obtain API keys for the following services:
+
+1. **Neon PostgreSQL** (Database)
+   - Create account at https://neon.tech
+   - Create a new project
+   - Copy your database connection string
+
+2. **NextAuth.js** (Authentication)
+   - Generate a secret: `openssl rand -base64 32`
+   - Set up OAuth providers (GitHub, Google)
+
+3. **GitHub OAuth** (Login Provider)
+   - Create OAuth app at https://github.com/settings/developers
+   - Copy Client ID and Client Secret
+
+4. **Google OAuth** (Login Provider)
+   - Create OAuth project at https://console.cloud.google.com
+   - Create OAuth 2.0 credentials
+   - Copy Client ID and Client Secret
+
+5. **Replicate.io** (AI Image Models)
+   - Create account at https://replicate.com
+   - Copy your API token for AI features (background removal, image generation)
+
+6. **Unsplash API** (Image Library)
+   - Create app at https://unsplash.com/oauth/applications
+   - Copy your Access Key
+
+7. **Stripe** (Payment Processing)
+   - Create account at https://stripe.com
+   - Create a product and price
+   - Copy Secret Key, Webhook Secret, and Price ID
+
+8. **UploadThing** (File Uploads)
+   - Create account at https://uploadthing.com
+   - Create an app
+   - Copy your API token
+
+### Setting Up Environment Variables
+
+Copy the example file:
+```bash
+cp .env.example .env
+```
+
+Fill in `.env` with your actual credentials from the services above
+
+**Important**: Never commit `.env` to version control. The `.env.example` file shows required variables without secrets.
+
 ## Project Overview
 
 **Canva Clone** is a full-stack Next.js 15 design editor application (running on port 3008) that allows users to create visual content with templates, shapes, images, and AI capabilities. The architecture combines a Next.js frontend with a Hono API backend, PostgreSQL database (via Drizzle ORM), and integrations with Stripe, Replicate, Unsplash, and UploadThing.
@@ -217,35 +270,6 @@ All API routes mounted at `/api` using Hono's modular router pattern:
 7. **Workspace Pattern**: Virtual "workspace" Rect on canvas defines export bounds (objects outside are hidden)
 8. **Polymorph Structure**: Each feature mirrors structure (api/, components/, hooks/, utils/)
 
-## Important Setup Details
-
-### Required Environment Variables
-
-```
-# Database (PostgreSQL)
-DATABASE_URL=postgresql://user:password@host/dbname
-
-# NextAuth
-AUTH_SECRET=<generate with: openssl rand -base64 32>
-AUTH_GITHUB_ID=<from GitHub OAuth app>
-AUTH_GITHUB_SECRET=<from GitHub OAuth app>
-AUTH_GOOGLE_ID=<from Google Cloud Console>
-AUTH_GOOGLE_SECRET=<from Google Cloud Console>
-
-# External APIs
-REPLICATE_API_TOKEN=<from replicate.com>
-NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=<from unsplash.com>
-
-# Stripe
-STRIPE_SECRET_KEY=<from stripe.com dashboard>
-STRIPE_WEBHOOK_SECRET=<from stripe.com webhook endpoint>
-STRIPE_PRICE_ID=<Stripe product price ID>
-NEXT_PUBLIC_APP_URL=http://localhost:3008 (dev), https://yourapp.com (prod)
-
-# File Upload
-UPLOADTHING_TOKEN=<from uploadthing.com>
-```
-
 ### Database Workflow
 
 ```bash
@@ -317,3 +341,82 @@ All objects support: fill color, stroke (color, width, dash-array), opacity, rot
 **Database**: PostgreSQL (Neon)
 **Services**: Stripe, Replicate, Unsplash, UploadThing
 **Dev Tools**: ESLint, TypeScript, Drizzle Kit
+
+## Dependencies & Libraries
+
+### Core Framework & UI
+- `next` (15.1.6) - React framework for production
+- `react` (19.0.0) - JavaScript library for building user interfaces
+- `react-dom` (19.0.0) - React package for working with the DOM
+- `typescript` (5) - Typed superset of JavaScript
+
+### State Management & Data Fetching
+- `@tanstack/react-query` (5.66.0) - Server state management, caching, and synchronization
+- `zustand` (5.0.3) - Lightweight state management library
+- `next-auth` (5.0.0-beta.25) - Authentication for Next.js applications
+
+### Canvas & Graphics
+- `fabric` (6.5.4) - JavaScript canvas library for interactive objects and drawings
+- `react-color` (2.19.3) - React color picker component
+- `material-colors` (1.2.6) - Material Design color palette
+- `lucide-react` (0.474.0) - Icon library
+- `react-icons` (5.4.0) - Icon library with multiple icon sets
+
+### UI Components & Styling
+- `@radix-ui/react-avatar` - Avatar component
+- `@radix-ui/react-dialog` - Dialog/modal component
+- `@radix-ui/react-dropdown-menu` - Dropdown menu component
+- `@radix-ui/react-label` - Label component
+- `@radix-ui/react-popover` - Popover component
+- `@radix-ui/react-scroll-area` - Scrollable area component
+- `@radix-ui/react-separator` - Separator/divider component
+- `@radix-ui/react-slider` - Slider/range input component
+- `@radix-ui/react-slot` - Slot composition utility
+- `@radix-ui/react-tooltip` - Tooltip component
+- `tailwindcss` (3.4.1) - Utility-first CSS framework
+- `tailwindcss-animate` (1.0.7) - Animation utilities for Tailwind CSS
+- `tailwind-merge` (3.0.1) - Merge Tailwind CSS classes without conflicts
+- `class-variance-authority` (0.7.1) - Component styling patterns
+- `clsx` (2.1.1) - Utility for constructing className strings
+- `next-themes` (0.4.4) - Theme management (dark/light mode)
+
+### Database & ORM
+- `drizzle-orm` (0.39.2) - TypeScript ORM for relational databases
+- `drizzle-zod` (0.7.0) - Zod schema generation from Drizzle
+- `@neondatabase/serverless` (0.10.4) - Serverless Postgres client (HTTP driver)
+- `@auth/drizzle-adapter` (1.7.4) - NextAuth.js adapter for Drizzle ORM
+
+### API & Server
+- `hono` (4.7.0) - Lightweight web framework
+- `@hono/auth-js` (1.0.15) - NextAuth.js middleware for Hono
+- `@hono/zod-validator` (0.4.2) - Zod validation middleware for Hono
+
+### Authentication & Security
+- `@auth/core` (0.37.4) - Core NextAuth.js authentication engine
+- `bcrypt-edge` (0.1.0) - Password hashing with edge runtime support
+
+### External Service Integrations
+- `stripe` (17.6.0) - Stripe payment processing SDK
+- `replicate` (1.0.1) - Replicate AI API client
+- `unsplash-js` (7.0.19) - Unsplash API client
+- `uploadthing` (7.4.4) - File upload service
+- `@uploadthing/react` (7.1.5) - React components for UploadThing
+
+### Utilities & Helpers
+- `zod` (3.24.1) - TypeScript-first schema validation
+- `date-fns` (4.1.0) - Modern date utility library
+- `lodash.debounce` (4.0.8) - Debouncing utility
+- `uuid` (11.0.5) - UUID generation
+- `sonner` (1.7.4) - Toast notification library
+- `react-use` (17.6.0) - React hooks library
+- `use-file-picker` (2.1.2) - File picker hook for React
+
+### Development & Build Tools
+- `drizzle-kit` (0.30.4) - Drizzle ORM migration and schema tools
+- `eslint` (9) - JavaScript linter
+- `eslint-config-next` (15.1.6) - ESLint configuration for Next.js
+- `postcss` (8) - CSS transformation tool
+- `dotenv` (16.4.7) - Environment variable loader
+- `@types/` - TypeScript type definitions for various libraries
+
+
